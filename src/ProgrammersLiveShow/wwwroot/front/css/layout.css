@@ -1,0 +1,184 @@
+/*
+    作者：KeyBaby
+    功能：系统模板页初始化配置
+    时间：2016-11-20
+*/
+
+/*系统初始化配置*/
+body {
+    background-color:white;
+    overflow-x:hidden;
+}
+h2{
+	font-size:20px;
+}
+h6 {
+    font-size: 1em;
+    margin: 0px;
+}
+
+/*顶部显示导航按钮以及搜索框样式*/
+.container{
+	width:100%;
+	padding-left:0px;
+	padding-right: 0px;
+}
+.navbar{
+	border-style:none;
+	background:#333;
+	font-size:12px;
+	color:#cccccc;
+    border-radius: 0px;
+    min-height:0px;
+}
+.navbar-nav > li > a{
+    padding-bottom: 0px;
+}
+.navbar-inverse {
+    background-color:rgba(255, 255, 255, 0.6);
+    border-color: #56575a;
+}
+.navbar-inverse .navbar-nav > li > a{
+    color:#333;
+    font-family: '黑体';
+    padding-top: 10px;
+    height: 34px;
+}
+@media (min-width: 2500px) {
+    .navbar-toggle {
+        display:block;
+    }
+}
+.navbar-inverse .navbar-nav.top > li > a{
+    color:#b0b0b0;
+    margin-top:-3px;
+}
+.top{
+    font: 12px/1.5 "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
+    color:#b0b0b0;
+    background-color: #333;
+}
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    color: #e27c00;
+    background-color: transparent;
+    font-size:18px;
+}
+.navbar-header{
+    background:#0068b7;
+}
+.navbar-inverse .navbar-toggle {
+    border-color: #fff;
+}
+.navbar-search>input{
+    font-size: 14px;
+}
+.right {
+    float:right;
+}
+.login_front_pic {
+    padding-top:0px;
+    padding-right: 0px;
+    margin-right: -24px;
+    margin-top: -9px;
+    margin-bottom: 0px;
+     
+}
+li.login_front_pic >a> img {
+    width: 25px;
+    height: 25px;
+    margin-top: 5px;
+}
+.logo{
+	padding-left:26px;
+	height:80px;
+}
+
+/*当屏幕尺寸小于600px时，应用下面的CSS样式*/
+@media screen and (max-width: 768px) {
+ .right{
+    float:left !important;
+ }
+}
+
+/*底部自定义列表*/
+dl{
+    color: #565555;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+dt{
+    padding-left: 0px;
+    font-size: 16px;
+    font-weight: normal;
+    font-family:'黑体';
+}
+a {
+    color: #337ab7;
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    text-decoration: none;
+    color:#e27c00 !important;
+}
+.navbar-bottom{
+	margin-top:20px;
+	padding-left: 18px;
+	border-top: 1px;
+    border-bottom: 1px;
+    border: 1px solid #333;
+    border-left: 0px;
+    border-right: 0px;
+    height:30px;
+}
+.footer-font-control{
+	text-align:center;
+}
+
+/*主菜单*/
+.navbar-primary> li > a{
+	font-size:18px !important;
+	color:#333;
+}
+.navbar-primary> li > a:hover{
+	font-size:20px !important;
+}
+.navbar-primary{
+	padding-top:10px;
+}
+/*主菜单-搜索*/
+.navbar-search{
+	padding-top:15px;
+	padding-right:34px;
+	padding-left: 34px;
+}
+.form-control-feedback-search{
+	position: absolute;
+    font-size: 22px;
+    right: 38px;
+    padding-top:21px;
+    top: -3px;
+    z-index: 2;
+    display: block;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    pointer-events: none;
+}
+.form-control {
+    height: 38px;
+    font-size: 16px;
+}
+.input-search{
+	color:#ccc;
+	font-size:16px;
+}
+
+@media screen and (min-width:1366px) {
+    .system_content {
+        width: 1300px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

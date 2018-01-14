@@ -1,0 +1,127 @@
+﻿@model IQueryable<Pls.Entity.OrderPay>
+@{
+    ViewBag.Title = "个人中心-订单详情";
+}
+@section css
+{
+    <link href="~/front/css/personalcenter.css" rel="stylesheet" asp-append-version="true" />
+}
+<div class="shopdetailarea">
+    <div class="maincontent col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div>
+            @{
+                var success_text = "提交订单";
+                var text = "";
+                var orderPay = Model.FirstOrDefault();
+                var pay_status = orderPay.order_paystatus == 1 ? "black" : "green";
+                var order_goods = orderPay.order_goods == 3 ? "green" : "black";
+                if (orderPay.order_paystatus == 2)
+                {
+                    success_text = "付款成功";
+                }
+                if (orderPay.order_goods == 2) {
+                    success_text = "等待收货";
+                }
+                if (orderPay.order_goods == 3)
+                {
+                    success_text = "完成";
+                    text = "订单已经完成，感谢您在初心商城购物，欢迎您对本次交易及所购商品进行评价。";
+                }
+            }
+            <div class="left_shopdetail col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="shopdetail_id">订单号：@orderPay.order_number</div>
+                <div class="shopdetail_status">@success_text</div>
+            </div>
+            <div class="right_shopdetail col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <p>@text</p>
+                <ul class="step">
+                    <li>
+                        <i class="glyphicon glyphicon-list-alt" style="color:green;"></i><b>提交订单 </b>
+                    </li>
+                </ul>
+                <span class="glyphicon glyphicon-hand-right" style="color:green;"></span>
+                <ul class="step">
+                    <li>
+                        <i class="glyphicon glyphicon-qrcode" style="color:@pay_status;"></i><b>付款成功</b>
+                    </li>
+                </ul>
+                <span class="glyphicon glyphicon-hand-right" style="color:@pay_status;"></span>
+                <ul class="step">
+                    <li>
+                        <i class="glyphicon glyphicon-plane" style="color:@order_goods"></i><b>等待收货</b>
+                    </li>
+                </ul>
+                <span class="glyphicon glyphicon-hand-right" style="color:@order_goods"></span>
+                <ul class="step">
+                    <li>
+                        <i class="glyphicon glyphicon-ok-sign" style="color:@order_goods"></i><b>完成</b>
+                    </li>
+                </ul>
+            </div>
+            <div class="clr"></div>
+        </div>
+    </div>
+    <div class="clr"></div>
+    
+    @foreach (var item in Model)
+    {
+        <div class="orderinfolist col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div>
+                <div class="listitem col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="leftorderinfo">
+                        <div>
+                            <img src="@item.shop_defaultimg" class="img img-responsive">
+                            <div style="text-align:center;">@item.shop_name</div>
+                            <div style="padding-top: 10px;">版本：@item.shop_code</div>
+                            <h4>¥@item.order_actualpay</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="rightreceiverinfo col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="payinfo">
+                        <div>商品信息</div>
+                        <ul class="receiverinfo">
+                            <li><span>创建时间：</span>@item.createtime.ToString("yyyy-MM-dd HH:mm:ss")</li>
+                            <li><span>商品价格：</span>@item.shop_currentprice</li>
+                            <li><span>订单总额：</span>@item.order_total</li>
+                            <li><span>订单总优惠：</span>@item.order_privilege</li>
+                            <li><span>订单实际支付金额：</span>@item.order_actualpay</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="rightpayinfo col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="payinfo">
+                        <div>付款信息</div>
+                        <ul class="payinfolist">
+                            <li><span>付款方式：</span>@(item.order_payway == 1 ? "支付宝支付" : "微信支付")</li>
+                            @if (string.IsNullOrEmpty(@item.shopcoupon_type))
+                            {
+                                <li><span>优惠类别：</span>未使用优惠</li>
+                                <li><span>优惠名称：</span>未使用优惠</li>
+                                <li><span>优惠金额：</span>未使用优惠</li>
+                            }
+                            else
+                            {
+                                <li><span>优惠类别：</span>@item.shopcoupon_type</li>
+                                <li><span>优惠名称：</span>@item.shopcoupon_name</li>
+                                <li><span>优惠金额：</span>@item.shopcoupon_money</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+        </div>
+    }
+    <div class="clr"></div>
+</div>
+
+@section scripts
+{
+    <script src="~/front/js/home.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            pls.front.home.init();
+        })
+    </script>
+}

@@ -1,0 +1,88 @@
+﻿<!--这里对权限进行判断，在权限管理器中判断按钮是否有操作权限，进行展示-->
+@model List<Pls.Entity.MenuActionInfo>
+
+<div class="page-sidebar navbar-collapse collapse">
+    <ul class="page-sidebar-menu page-sidebar-menu-light" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+        <li class="sidebar-toggler-wrapper">
+            <div class="sidebar-toggler"></div>
+        </li>
+        @if (Model.Count > 0)
+        {
+            for (int i = 0; i < Model.Count; i++)
+            {
+                if (i == 0)
+                {
+                    <li class="start active open">
+                        <a href="javascript:void(0);">
+                            <i class="@Model[i].action_icon"></i><span class="title">@Model[i].action_name</span><span class="arrow open"></span>
+                        </a>
+                        <ul class="sub-menu">
+                            @{
+                                var menuAction = Model[i].menuActionInfo;
+                                int mentAction_int = menuAction == null ? 0 : menuAction.Count;
+
+                                @for (int j = 0; j < mentAction_int; j++)
+                                {
+                                    if (j == 0)
+                                    {
+                                        <li class="active">
+                                            <a href="javascript:void(0)" url="@menuAction[j].action_url">
+                                                <i class="@menuAction[j].action_icon"></i>
+                                                @if (@menuAction[j].action_newaction)
+                                                {
+                                                    <span class="badge badge-danger">new</span>
+                                                } 
+                                                @menuAction[j].action_name
+                                            </a>
+                                        </li>
+
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a href="javascript:void(0)" url="@menuAction[j].action_url">
+                                                <i class="@menuAction[j].action_icon"></i>
+                                                @if (@menuAction[j].action_newaction)
+                                                {
+                                                    <span class="badge badge-danger">new</span>
+                                                } 
+                                                @menuAction[j].action_name
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="javascript:void(0);">
+                            <i class="@Model[i].action_icon"></i><span class="title">@Model[i].action_name</span><span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu">
+                            @{
+                                var menuAction_sub = Model[i].menuActionInfo;
+                                int mentAction_sub_int = menuAction_sub == null ? 0 : menuAction_sub.Count;
+                                @for (int m = 0; m < mentAction_sub_int; m++)
+                                {
+                                    <li>
+                                        <a href="javascript:void(0)" url="@menuAction_sub[m].action_url">
+                                            <i class="@menuAction_sub[m].action_icon"></i>
+                                            @if (@menuAction_sub[m].action_newaction)
+                                            {
+                                                <span class="badge badge-danger">new</span>
+                                            }
+                                            @menuAction_sub[m].action_name
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</div>

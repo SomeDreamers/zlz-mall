@@ -1,0 +1,23 @@
+﻿<div class="modal" id="payModel" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                支付方式：支付宝、微信<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <ul class="payway">
+                    <li><p>支付宝<p><img src="~/img/alipay.png" class="img img-responsive" /></li>
+                    <li><p>微信</p><img src="~/img/wechat.png" class="img img-responsive"></li>
+                </ul>
+                <p class="prompt">
+                    ①:如果您已支付，请勿重新支付，管理员处理之后您的邮箱将收到下载链接和下载码<br />
+                    ②:请您一定确认收款账户,如果支付错误本网站概不负责<br />
+                    ③:您需要支付的金额为:<em>¥</em><span id="payMoney">***</span>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default stay" id="btnPayAdd" data-toggle="modal">确认支付</button>
+            </div>
+        </div>
+    </div>
+</div>

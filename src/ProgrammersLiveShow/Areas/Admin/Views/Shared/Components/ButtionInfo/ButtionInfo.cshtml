@@ -1,0 +1,14 @@
+﻿<!--这里对权限进行判断，在权限管理器中判断按钮是否有操作权限，进行展示-->
+@model IQueryable<Pls.Entity.ButtionActionInfo>
+
+<div id="toolbar" class="btn-group">
+    @if (Model.Any())
+    {
+        foreach (var buttion in Model)
+        {
+            <button id="@buttion.action_event" type="button" class="btn btn-primary">
+                <span><i class="@buttion.action_icon"></i>@buttion.action_name</span>
+            </button>
+        }
+    }
+</div>

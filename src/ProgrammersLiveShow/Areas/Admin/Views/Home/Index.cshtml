@@ -1,0 +1,164 @@
+﻿<div class="panel-body" style="padding:0">
+    <div class="panel panel-default">
+        <div class="panel-heading"><i class="icon-home"></i>系统管理/<i class="icon-comment"></i>首页</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat blue-madison">
+                        <div class="visual"></div>
+                        <div class="details"><div class="number" id="user_count">*/*</div><div class="desc">总用户数/今日用户数</div></div>
+                        <a class="more"></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat red-intense">
+                        <div class="visual"></div>
+                        <div class="details">
+                            <div class="number" id="revenues_number">*</div><div class="desc" id="revenues_desc">*</div>
+                        </div>
+                        <a class="more"></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat green-haze">
+                        <div class="visual"></div>
+                        <div class="details">
+                            <div class="number">**</div><div class="desc">暂留</div>
+                        </div>
+                        <a class="more"></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat purple-plum">
+                        <div class="visual"></div>
+                        <div class="details">
+                            <div class="number">**</div><div class="desc">暂留</div>
+                        </div>
+                        <a class="more"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <ul class="nav nav-tabs">
+                        <li class="dropdown">
+                            <a href="#" id="publich_environment" class="dropdown-toggle" data-toggle="dropdown">如何开发<b class="caret"></b></a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="publich_environment">
+                                <li><a href="#development_user" data-toggle="tab">开发配置</a></li>
+                                <li><a href="#notice_matter" data-toggle="tab">注意事项</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" id="development_environment" class="dropdown-toggle" data-toggle="dropdown">开发环境<b class="caret"></b></a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="development_environment">
+                                <li><a href="#development_tool" tabindex="-1" data-toggle="tab">开发工具</a></li>
+                                <li><a href="#github_tool" tabindex="-1" data-toggle="tab">GitHub工具</a></li>
+                                <li><a href="#data_tool" tabindex="-1" data-toggle="tab">数据库工具</a></li>
+                                <li><a href="#bug_tool" tabindex="-1" data-toggle="tab">Bug管理工具</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#use_art" data-toggle="tab">使用技术</a></li>
+                        <li><a href="#deployment_environment" data-toggle="tab">部署环境</a></li> 
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="development_user">
+                            <ul class="list-group">
+                                <li class="list-group-item">①:配置环境(参考开发环境节点)</li>
+                                <li class="list-group-item">②:注册码云账号并且将账号给我配置</li>
+                                <li class="list-group-item">③:配置完成后,git克隆一套源码(切换分支developer)</li>
+                                <li class="list-group-item">④:注册bugclose系统账号</li>
+                                <li class="list-group-item">⑤:可以开始我们的开发之旅了</li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="notice_matter">
+                            <ul class="list-group">
+                                <li class="list-group-item">①:必须按照严格的项目规范实现功能(项目规范文档在document下)</li>
+                                <li class="list-group-item">②:创建C#类文件在顶端设置版权(模板在document下readme中查找)</li>
+                                <li class="list-group-item">③:提交代码时先pull之后必须没有bug才能提交(提交写功能说明)</li>
+                                <li class="list-group-item">④:数据库所有表不做任何删除动作(重要)</li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="development_tool">
+                            <ul class="list-group">
+                                <li class="list-group-item">①:电脑一台(建议CPU、内存高一点)</li>
+                                <li class="list-group-item">②:开发工具(Visual Studio 2017)自行下载</li>
+                            </ul>
+                        </div>
+
+                        <div id="github_tool" class="tab-pane fade">
+                            <ul class="list-group">
+                                <li class="list-group-item">①:电脑安装git管理软件(<a href="https://git-scm.com/downloads/" target="_blank">单击下载</a>)</li>
+                                <li class="list-group-item">②:注册码云账号(<a href="https://git.oschina.net/signup" target="_blank">单击注册</a>)</li>
+                                <li class="list-group-item">③:将码云账号发给管理员，管理员配置权限之后即可下载</li>
+                                <li class="list-group-item">④:源码clone地址：https://git.oschina.net/kencery/ProgrammersLiveShow.git </li>
+                                <li class="list-group-item">⑤:克隆完成之后，切换分支(developer)可以开发</li>
+                            </ul>
+                        </div>
+
+                        <div id="data_tool" class="tab-pane fade">
+                            <ul class="list-group">
+                                <li class="list-group-item">①:项目使用数据库mysql</li>
+                                <li class="list-group-item">②:数据库生成采用以下命令参考README.md命令：</li>
+                            </ul>
+                        </div>
+
+                        <div id="bug_tool" class="tab-pane fade">
+                            <ul class="list-group">
+                                <li class="list-group-item">①:bugclose系统注册账号(<a href="https://www.bugclose.com/register.html" target="_blank">单击注册</a>)</li>
+                                <li class="list-group-item">②:将注册的账户交给管理员进行配置</li>
+                                <li class="list-group-item">③:配置完成之后则可以登录跟踪自己的Bug和任务</li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="use_art">
+                            <ul class="list-group">
+                                <li class="list-group-item">①:后端架构(asp.net core + efcore + unitwork+autofac)</li>
+                                <li class="list-group-item">②:前端架构(metronic.js+bootstrap系列插件+ztree下拉框)</li>
+                                <li class="list-group-item">③:缓存服务(redis+cookie+session)</li>
+                                <li class="list-group-item">④:图片存放(七牛云)</li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="deployment_environment">
+                            <ul class="list-group">
+                                <li class="list-group-item">①:服务器采用：Linux CentOS7</li>
+                                <li class="list-group-item">②:配置环境采用：Jexus</li>
+                                <li class="list-group-item">③:数据库采用：mysql</li>
+                            </ul>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#system_info" data-toggle="tab">系统信息</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="system_info">
+                            <ul class="list-group">
+                                <li class="list-group-item">名称：@ViewBag.applicationName</li>
+                                <li class="list-group-item">应用绝对目录：@ViewBag.contentRootPath</li>
+                                <li class="list-group-item">应用配置：@ViewBag.environmentName </li>
+                                <li class="list-group-item">应用Web目录：@ViewBag.webRootPath</li>
+                            </ul>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/admin/js/limit/home.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            pls.admin.home.init({
+                expendMoney: "@ViewBag.ExpendMoney"
+            });
+        })
+    </script>
+}

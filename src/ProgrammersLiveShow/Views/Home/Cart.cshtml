@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "购物车";
+}
+@section css
+{
+    <link href="~/front/css/cart.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 carbox" style="margin-bottom:20px;">
+    @if (ViewBag.userType == 1)
+    {
+        <div class="remind">
+            <i class="glyphicon glyphicon-warning-sign"></i>温馨提示:您还没有登录，登录后才能下订单，请您登录
+            <a asp-controller="Login" asp-action="Index" asp-route-type="0" class="btnlogin">立即登录</a>
+        </div>
+    }
+    <div class="cartNotNull">
+        <span  id="shopping">
+            <img src="~/front/img/notice.jpg" />      
+            <a asp-controller="Home" asp-action="Index">
+                <img src="~/front/img/empty.jpg" id="emptycart" />
+                <img src="~/front/img/moto.jpg" id="currentstep" />
+            </a>
+        </span>
+    </div>
+
+    <div class="cart">
+        <div class="cartheader">
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2"><div><input type="checkbox" id="checkedAllTop">全选</div></div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">商品</div>
+            <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">单价</div>
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">数量</div>
+            <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">小计</div>
+            <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">操作</div>
+        </div>
+        <div id="tableCarts"></div>
+        <p id="error_cart_message" class="error_message"></p>
+
+        <!-- 结算 -->
+        <div class="cart-toolbar">
+            <div class="toolbar-wrap">
+                <div class="selected-item-list hide"></div>
+                <div class="options-box">
+                    <div class="select-all" style="color:#666 !important;margin-right:10px;">
+                        <div class="cart-checkbox"><input type="checkbox" id="checkedAllButton">全选</div>
+                    </div>
+                    <div class="toolbar-right" style="padding-right:15px;width:150px;">
+                        <div class="normal">
+                            <div class="comm-right">
+                                <button a class="dingdan" id="btnAddOrder">提交订单</button>
+                                <div class="price-sum">
+                                    <div>
+                                        <span class="txt txt-new">总价：</span>
+                                        <span class="price sumPrice"><em>00.00</em><span style="font-style:italic">元</span></span>
+                                    </div>
+                                </div>
+                                <div class="amount-sum">已选择<em>0</em>件商品<b class="up"></b></div>
+                                <div class="clr"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="clear:both;"></div>
+
+@section scripts
+{
+    <script src="~/front/js/cart.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            pls.front.cart.init();
+        })
+    </script>
+}

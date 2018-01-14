@@ -1,0 +1,367 @@
+﻿@model Pls.Entity.ShopDetailInfo
+@{
+    ViewBag.Title = "初心商城详情页面";
+}
+@section css
+{
+    <link href="~/front/css/star.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/front/css/detail.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<!-- 上半部分：商品图片(滑块、放大镜)，商品信息，咨询 -->
+<div class="product_details col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-top:4px solid #8c8888;">
+    <div style="padding-top:10px;">
+        <div class="preview col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <div class="container">
+                <div class="con-FangDa" id="fangdajing">
+                    @{
+                        var shopImageEntitys = Model.shopImageEntitys;
+                        if (shopImageEntitys != null && shopImageEntitys.Any())
+                        {
+                            <div class="con-fangDaIMg">
+                                <img src="@shopImageEntitys.FirstOrDefault().shopimage_address" /><div class="magnifyingBegin"></div>
+                                <div class="magnifyingShow"><img src="@shopImageEntitys.FirstOrDefault().shopimage_address" /></div>
+                            </div>
+                            <ul class="con-FangDa-ImgList">
+                                @foreach (var shopimage in shopImageEntitys)
+                                {
+                                    <li><img src="@shopimage.shopimage_address" data-bigimg="@shopimage.shopimage_address" class="img-thumbnail"></li>
+                                }
+                            </ul>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="preview col-xs-12 col-sm-12 col-md-9 col-lg-9">
+            <div>
+                <div class="preview col-xs-12 col-sm-12 col-md-9 col-lg-9">
+                    <h3>@Model.shopEntity.shop_name</h3>
+                    <p class="des">&nbsp;&nbsp;&nbsp;@Model.shopEntity.shop_memo</p>
+                    <ul class="onsale">
+                        <li><div>商品编号</div><span><strong>@Model.shopEntity.shop_number</strong></span></li>
+                        @{
+                            var shopSkuEntitys = Model.ShopSkuEntitys.FirstOrDefault();
+                            var shopCouponEntity = Model.shopCouponEntity;
+                            <input type="hidden" id="shop_defaultimg" value="@Model.shopEntity.shop_defaultimg" />
+                            if (shopSkuEntitys != null)
+                            {
+                                <input type="hidden" id="shopsku_id" value="@shopSkuEntitys.shopsku_id" />
+                                <input type="hidden" id="shop_code" value="@shopSkuEntitys.shop_code" />
+                                <li>
+                                    <ul>
+                                        <li>
+                                            <div class="originalprice">原价</div>
+                                            <span><strong><del id="shopsku_originalprice">¥@shopSkuEntitys.shopsku_originalprice</del></strong></span>
+                                        </li>
+                                        <li>
+                                            <div class="vip">会员价</div>
+                                            <span><strong class="vipprice" id="shopsku_currentprice">¥@shopSkuEntitys.shopsku_currentprice</strong></span>
+                                        </li>
+                                        @if (shopCouponEntity != null)
+                                        {
+                                            <li data-toggle="tooltip" data-placement="top" title="促销金额为：¥@shopCouponEntity.shopcoupon_money">
+                                                <div class="saleinfo">促销信息</div>
+                                                <div class="des" ><em class="limitpurchase">@shopCouponEntity.shopcoupon_type</em>@shopCouponEntity.shopcoupon_name</div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div>分类</div>
+                                    <div>
+                                        <ul class="product_versionn">
+                                            @{
+                                                var int_type = 0;
+                                                foreach (var shopsku in Model.ShopSkuEntitys)
+                                                {
+                                                    if (int_type == 0)
+                                                    {
+                                                        int_type++;
+                                                        <li shopsku_id="@shopsku.shopsku_id" class="product_version_color">@shopsku.shop_code</li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li shopsku_id="@shopsku.shopsku_id">@shopsku.shop_code</li>
+                                                    }
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                </li>
+                                                }
+                            }
+                        <li>
+                            <div class="count">数量</div>
+                            <div>
+                                <div class="btn-group">
+                                    <button id="reduce" type="button" disabled class="btn btn-default">-</button>
+                                    <input id="count" type="text" disabled class="btn btn-default" value="1">
+                                    <button id="add" type="button" disabled class="btn btn-default">+</button>
+                                    <span class="limitcount">限购1件</span>
+                                </div>
+                            </div>
+                        </li>  
+                    </ul>
+                    <p id="cartYesNumber" style="border:1px dashed orange;color:#e4393c;width:auto;padding:5px 10px 5px 10px;display:none;" >
+                        购物车中已存在此商品(限购一件)，<a asp-controller="Home" asp-action="Cart" >单击</a>跳转购物车</p>
+                    <button class="btn btn-primary cart" id="btnAddCart" data-toggle="modal">加入购物车</button>
+                    <button class="btn btn-primary cart" id="btnImmediatelyPay">立即下单</button>
+                </div>
+             
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <div class="authorize"></div>
+                    <div class="relate">
+                        <ul>
+                            <li><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=934532778&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:934532778:51" alt="点击这里给我发消息" title="点击这里给我发消息" /></a></li>
+                            <li><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=894708097&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:894708097:51" alt="点击这里给我发消息" title="点击这里给我发消息" /></a></li>
+                            <li><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=253481719&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:253481719:51" alt="点击这里给我发消息" title="点击这里给我发消息" /></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 下半部分：热销榜、商品详情、商品版本、购买流程 -->
+<div class="moreinfo col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        @await Component.InvokeAsync("HomeShop", new { top = 4, type = 4 })
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+        <div class="currentProductDetail">
+            <div class="tab">
+                <ul id="productTab" class="nav nav-tabs">
+                    <li class="active"><a href="#version" data-toggle="tab">商品详情</a></li>
+                    <li><a href="#evaluate" data-toggle="tab" id="btnCommentShop">商品评价</a></li>
+                    <li><a href="#afterSaleService" data-toggle="tab">注意事项</a></li>
+                </ul>
+            </div>
+            <div id="productTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="version">
+                    <ul class="product_elaborate">
+                        @{
+                            var shopAttrEntity = Model.shopAttrEntity;
+                            if (shopAttrEntity != null) {
+                                var isopensource = @shopAttrEntity.shopattr_isopensource ? "是" : "否";
+                                <li>开发者：@shopAttrEntity.shopattr_author</li>
+                                if (!string.IsNullOrEmpty(shopAttrEntity.shopattr_language))
+                                {
+                                    <li>开发语言：@shopAttrEntity.shopattr_language</li>
+                                }
+                                if (!string.IsNullOrEmpty(shopAttrEntity.shopattr_condition))
+                                {
+                                    <li>开发环境：@shopAttrEntity.shopattr_condition</li>
+                                }
+                                if (!string.IsNullOrEmpty(shopAttrEntity.shopattr_database))
+                                {
+                                    <li>数据库：@shopAttrEntity.shopattr_database</li>
+                                }
+                                if (!string.IsNullOrEmpty(shopAttrEntity.shopattr_framework))
+                                {
+                                    <li>商品架构：@shopAttrEntity.shopattr_framework</li>
+                                }
+                                if (!string.IsNullOrEmpty(shopAttrEntity.shopattr_manage))
+                                {
+                                    <li>代码管理工具：@shopAttrEntity.shopattr_manage</li>
+                                }
+                                <li>大小(M)：@shopAttrEntity.shopattr_size M</li>
+                                if (!string.IsNullOrEmpty(shopAttrEntity.shopattr_utf))
+                                {
+                                    <li>编码格式：@shopAttrEntity.shopattr_utf</li>
+                                }
+                                <li>是否开源：@isopensource</li>
+                                if (!string.IsNullOrEmpty(shopAttrEntity.shopattr_opensource))
+                                {
+                                    <li>开源协议：@shopAttrEntity.shopattr_opensource</li>
+                                }
+                                if (!string.IsNullOrEmpty(shopAttrEntity.shopattr_weburl))
+                                {
+                                    <li>演示地址：@shopAttrEntity.shopattr_weburl</li>
+                                }
+                                if (!string.IsNullOrEmpty(shopAttrEntity.shopattr_blogaddress))
+                                {
+                                    <li>博客地址：@shopAttrEntity.shopattr_blogaddress</li>
+                                }
+                                if (!string.IsNullOrEmpty(shopAttrEntity.shopattr_memo))
+                                {
+                                    <li>其它：@shopAttrEntity.shopattr_memo</li>
+                                }
+                            }
+                        }
+                    </ul>
+                    <div class="showmore"><a href="javasctipt:void(0)">+显示全部参数</a></div>
+                    <div style="clear:both;"></div> 
+                    <div class="editorContent">
+                        @Html.Raw(Model.shopEntity.shop_desc)
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+
+                <!-- 商品评价(商品评价下的导航栏——晒图，好评，中评，差评) -->
+                <div class="tab-pane fade" id="evaluate">
+                    <p class="p_statement">
+                        <b class="statement">权利声明：</b>本站所有商品信息、客户评价等信息是初心商城重要的数据资源，未经许可，禁止非法转载使用。
+                        注：本站商品信息均来自初心商城，其真实性、准确性和合法性由初心商城负责。</p>
+                    <ul id="productEvaluateTab" class="nav nav-tabs" style="background: #f7f7f7;">
+                        <li class="active"><a href="#allEvaluation" data-toggle="tab">全部评价</a></li>
+                        <li><a href="#showPraise" data-toggle="tab" id="btnGoodReputation">好评</a></li>
+                        <li><a href="#showNeutral" data-toggle="tab" id="btnCenterReputation">中评</a></li>
+                        <li><a href="#showbad" data-toggle="tab" id="btnBadReputation">差评</a></li>
+                    </ul>
+                    <div id="productEvaluateContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="allEvaluation">
+                            <ul class="evaluitem"></ul>
+                            <hr>
+                            @* 暂时不用分页
+                                <ul class="pagination">
+                                <li><a href="javscript:void(0)">1</a></li>
+                                <li><a href="javscript:void(0)">2</a></li>
+                                <li><a href="javscript:void(0)">3</a></li>
+                                <li><a href="javscript:void(0)">4</a></li>
+                                <li><a href="javscript:void(0)">5</a></li>
+                                <li><a href="javscript:void(0)">下一页</a></li>
+                            </ul>*@
+                        </div>
+                        <div class="tab-pane fade" id="showPraise">
+                            <ul class="evaluitem"></ul>
+                            <hr>
+                        </div>
+                        <div class="tab-pane fade" id="showNeutral">
+                            <ul class="evaluitem"></ul>
+                            <hr>
+                        </div>
+                        <div class="tab-pane fade" id="showbad">
+                            <ul class="evaluitem"></ul>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 售后服务 -->
+                <div class="tab-pane fade" id="afterSaleService" style="padding:5px 15px 15px 5px;">
+                    <div class="afterservice">
+                        <div style="width:100px;border-bottom:2px solid #ff5722;margin-bottom:0px;font-weight:bold;">1、交易规则</div>
+                        <hr style="margin-top:0px;margin-bottom:0px;" />
+                        <div class="transaction">
+                            <ul>
+                                <li>购买源码且付款</li>
+                                <span style="color:red;font-size:16px;"><i class="glyphicon glyphicon-arrow-right"></i></span>
+                                <li style="border:0px;background:white;">
+                                    <ul class="success_faile">
+                                        <li class="success" style="border:0px;padding-left:0px;text-align:left;padding-bottom:0px;margin-bottom:5px;">
+                                        <ul >
+                                            <li>买家未确认收货</li>
+                                            <span style="color:red;"><i class="glyphicon glyphicon-arrow-right"></i></span>
+                                            <li style="display:inline-block;">收不到下载信息邮件</li>
+                                        </ul>
+                                        </li>
+                                        <li class="success" style="background:#ff5722;margin-top:0px;">买家确认收货</li>
+                                        <li class="faile" style="border:0px;padding-left:0px;margin-left:0px;text-align:left;">
+                                            <ul style="padding-left:0px;margin-left:0px;">
+                                                <li>有问题未解决</li>
+                                                <span style="color:red;"><i class="glyphicon glyphicon-arrow-right"></i></span>
+                                                <li style="display:inline-block;">七天内申请退款</li>
+                                                <span style="color:red;"><i class="glyphicon glyphicon-arrow-right"></i></span>
+                                                <li style="display:inline-block;">交易取消、退款</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <span style="color:red;"><i class="glyphicon glyphicon-arrow-right"></i></span>
+                                <li style="list-style:none;">收到下载信息邮件</li>
+                            </ul>
+                        </div>
+
+                        <div style="width:100px;border-bottom:2px solid #ff5722;font-weight:bold;">2、发货方式</div>
+                        <hr style="margin-top:0px;margin-bottom:10px;" />
+                        <div>
+                            <p><b style="color:#666;">1、自动：</b>在上方保障服务中标有自动发货的商品，拍下后，将会自动收到来自卖家的商品获取（下载）链接</p>
+                            <p><b style="color:#666;">2、手动：</b>在上方保障服务中标有手动发货的商品，拍下后，卖家会收到邮件，也可通过QQ或订单中的电话联系对方。</p>
+                        </div>
+
+                        <div style="width:100px;border-bottom:2px solid #ff5722;font-weight:bold;">3、退款说明</div>
+                        <hr style="margin-top:0px;margin-bottom:10px;" />
+                        <div>
+                            <p><b style="color:#666;">1、描述：</b>源码描述(含标题)与实际源码不一致的（例：描述PHP实际为ASP、描述的功能实际缺少、版本不符等）</p>
+                            <p><b style="color:#666;">2、演示：</b>有演示站时，与实际源码小于95%一致的（但描述中有"不保证完全一样、有变化的可能性"类似显著声明的除外）</p>
+                            <p><b style="color:#666;">3、发货：</b>手动发货源码，在卖家未发货前，已申请退款的</p>
+                            <p><b style="color:#666;">4、服务：</b>卖家不提供安装服务或需额外收费的（但描述中有显著声明的除外）</p>
+                            <p><b style="color:#666;">5、其它：</b>如质量方面的硬性常规问题等</p>
+                            <p><b style="color:#666;">备注：</b>经核实符合上述任一，均支持退款，但卖家予以积极解决问题则除外。交易中的商品，卖家无法对描述进行修改！</p>
+                        </div>
+
+                        <div style="width:100px;border-bottom:2px solid #ff5722;font-weight:bold;">4、注意事项</div>
+                        <hr style="margin-top:0px;margin-bottom:10px;" />
+                        <div>
+                            <p>1、客户买完之后未确认收货，将不会收到下载地址和下载码，确认收货之后才能收到下载地址和下载码。</p>
+                            <p>2、在未拍下前，双方在QQ上所商定的内容，亦可成为纠纷评判依据（商定与描述冲突时，商定为准）；</p>
+                            <p>3、在商品同时有网站演示与图片演示，且站演与图演不一致时，默认按图演作为纠纷评判依据（特别声明或有商定除外）；</p>
+                            <p>4、在没有"无任何正当退款依据"的前提下，写有"一旦售出，概不支持退款"等类似的声明，视为无效声明；</p>
+                            <p>5、虽然交易产生纠纷的几率很小，但请尽量保留如聊天记录这样的重要信息，以防产生纠纷时出现问题不明确的情况。</p>
+                        </div>
+                       
+                        <div style="width:100px;border-bottom:2px solid #ff5722;font-weight:bold;">5、交易声明</div>
+                        <hr style="margin-top:0px;margin-bottom:10px;" />
+                        <div>
+                            <p>1、本站作为直卖平台，依据交易合同（商品描述、交易前商定的内容）来保障交易的安全及买卖双方的权益；</p>
+                            <p>2、非平台线上交易的商品，出现任何后果均与本站无关；无论卖家以何理由要求线下交易的，请联系管理举报。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="clear:both;"></div>
+
+<!-- 模态框，加入购物车之后触发（Modal） -->
+<div class="modal" id="cartModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="text-align:center;">
+                <i class="glyphicon glyphicon-ok-sign" style="font-size:50px;color:#2A7D16;margin-right:10px;vertical-align:middle; "></i>
+                <span style="font-size:16px;">您商品已成功加入购物车，请选择留在本页面还是去购物车结算!</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="color: #E4393C;background: #FFFFFF;border:#cccccc;">留在商品详情页</button>
+                <a class="btn btn-default" style="color:white;background:#E4393C" asp-controller="Home" asp-action="Cart">去购物车结算</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/front/js/sys/star.js" asp-append-version="true"></script>
+    <script src="~/front/js/detail.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            @{
+                var shopcoupon_id_one = "";
+                var shopcoupon_type_one = "";
+                var shopcoupon_name_one = "";
+                var shopCoupon = @Model.shopCouponEntity;
+                if (shopCoupon != null)
+                {
+                    shopcoupon_id_one = shopCoupon.shopcoupon_id;
+                    shopcoupon_type_one = shopCoupon.shopcoupon_type;
+                    shopcoupon_name_one = shopCoupon.shopcoupon_name;
+                }
+            }
+            pls.front.detail.init({
+                shop_id: "@Model.shopEntity.shop_id",
+                shop_name: "@Model.shopEntity.shop_name",
+                shopcoupon_id: "@shopcoupon_id_one",
+                shopcoupon_type: "@shopcoupon_type_one",
+                shopcoupon_name: "@shopcoupon_name_one"
+            });
+        });
+    </script>
+}

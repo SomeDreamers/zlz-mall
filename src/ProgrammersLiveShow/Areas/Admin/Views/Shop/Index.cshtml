@@ -1,0 +1,414 @@
+﻿@{
+    Layout = null;
+}
+
+@*查询并且展示列表  *@
+<div class="panel-body" style="padding:0">
+    <div class="panel panel-default">
+        <div class="panel-heading"></div>
+        <div class="panel-body">
+            <div>
+                <p style="color:blue">①：商品管理需要设置商品表、商品SKU表、商品属性、商品图片、商品优惠(可不设置)（必须设置一个商品默认图片）、详细设计请看添加中的实现</p>
+                <p style="color:blue">②：商品管理中商品详情请单击详情按钮查看，对应SKU表、商品属性、图片、优惠等信息请在修改模块中查看，慎重操作</p>
+                <p style="color:blue">③：添加浮层打开之后，一次性只能针对一个商品进行设置，不能同时添加多个商品，设置完成之后关闭在单击添加设置第二个商品</p>
+            </div>
+            <hr />
+            <form id="formSearch" class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label" for="user_search">名称:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="shop_name_search" placeholder="请输入商品名称">
+                    </div>
+                    <label class="control-label" for ="user_search">编号:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="shop_number_search" placeholder="请输入商品编号">
+                    </div>
+                    <label class="control-label" for="shop_isdiscount_search">优惠:</label>
+                    <div class="col-sm-1">
+                        <select class="form-control" id="shop_isdiscount_search">
+                            <option value="-1">全部</option>
+                            <option value="0">优惠</option>
+                            <option value="1">未优惠</option>
+                        </select>
+                    </div>
+                    <label class="control-label" for="distable_status">状态:</label>
+                    <div class="col-sm-1">
+                        <select class="form-control" id="distable_status">
+                            <option value="-1">全部</option>
+                            <option value="1">已禁用</option>
+                            <option value="0">未禁用</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" id="btnQueryList" class="btn btn-primary"><i class="icon-search"></i>查询</button>
+                        <button type="button" id="btnReset" class="btn btn-primary"><i class="icon-remove"></i>清空</button>
+                    </div>
+                </div>
+            </form>
+            <div>
+                <table id="shopinfo"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ButtionInfo")
+
+@*添加编辑浮层*@
+<div class="modal fade" id="AddEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:60%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title" id="HeadTitle">商品信息管理</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#shop_manage" data-toggle="tab" id="btnShopManage_Skip">商品管理</a></li>
+                    <li><a href="#shopsku_manage" data-toggle="tab"id="btnShopSkuManage_Skip">商品SKU管理</a></li>
+                    <li><a href="#shopattr_manage_active" data-toggle="tab" id="btnShopAttrManage_Skip">商品属性管理</a></li>
+                    <li><a href="#shopimage_manage" data-toggle="tab" id="btnShopImageManage_Skip">商品图片管理</a></li>
+                </ul>
+                <div class="tab-content" style="padding-top:10px;">
+                    <p style="color:red">备注：所有操作请您按照正规流程去设置，否则可能会影响您的产品效率(商品-商品SKU-商品属性-商品图片-商品优惠)</p>
+
+                    <div class="tab-pane fade in active" id="shop_manage">
+                        <form id="shopOperation" method="post" class="form-horizontal">
+                            <input type="hidden" id="shop_id" name="shop_id" />
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">名称:</span>
+                                    <input type="text" id="shop_name" name="shop_name" placeholder="请输入商品名称" maxlength="64" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">简介:</span>
+                                    <input type="text" id="shop_memo" name="shop_memo" placeholder="请输入商品简介(一句话介绍)" maxlength="32" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">介绍:</span>
+                                    <textarea id="shop_desc" name="shop_desc" style="height:200px;max-height:200px;"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                        <hr />
+                        <div style="text-align:center">
+                            <button type="button" class="btn btn-primary" id="btnAddShopData"><i class="icon-ok"></i>确定</button>
+                            <span style="color:red">* 商品设置完成后，请设置商品SKU</span>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="shopsku_manage">
+                        <div>
+                            <table class="table">
+                                <caption>商品SKU展示</caption>
+                                <thead>
+                                    <tr>
+                                        <th>商品Code</th>
+                                        <th>原价</th>
+                                        <th>会员价</th>
+                                        <th>下载地址</th>
+                                        <th>下载码</th>
+                                        <th>是否启用</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <hr />
+                        <form id="shopskuOperation" method="post" class="form-horizontal">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Code:</span>
+                                    <input type="text" id="shop_code" name="shop_code" placeholder="请输入商品Code" maxlength="64" class="form-control" />
+                                    <span class="input-group-addon">原价:</span>
+                                    <input type="text" id="shopsku_originalprice" name="shopsku_originalprice" placeholder="请输入商品原价" maxlength="64" class="form-control" />
+                                    <span class="input-group-addon">会员价:</span>
+                                    <input type="text" id="shopsku_currentprice" name="shopsku_currentprice" placeholder="请输入商品会员价(免费请输入0)" maxlength="64" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">下载地址:</span>
+                                    <input type="text" id="shopsku_url" name="shopsku_url" placeholder="请输入商品下载地址" maxlength="100" class="form-control" />
+                                    <span class="input-group-addon">下载码:</span>
+                                    <input type="text" id="shopsku_code" name="shopsku_code" placeholder="请输入商品下载码" maxlength="100" class="form-control" />
+                                </div>
+                            </div>
+                        </form>
+                        <hr />
+                        <div style="text-align:center">
+                            <button type="button" class="btn btn-primary" id="btnAddShopSkuData"><i class="icon-ok"></i>添加</button>
+                            <button type="button" class="btn btn-primary" id="btnUpdateShopSkuData"><i class="icon-ok"></i>修改</button>
+                            <button type="button" class="btn btn-primary" id="btnAddShopSkuSkip_Last"><i class="icon-ok"></i>下一步</button>
+                            <span style="color:red">* 商品SKU设置完成后，请设置商品属性</span>
+                        </div>   
+                    </div>
+
+                    <div class="tab-pane fade" id="shopattr_manage_active">
+                        <form id="shopattrOperation" method="post" class="form-horizontal">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">开发者:</span>
+                                    <input type="text" id="shopattr_author" name="shopattr_author" placeholder="请输入开发者" maxlength="32" class="form-control" />
+                                    <span class="input-group-addon">语言:</span>
+                                    <input type="text" id="shopattr_language" name="shopattr_language" placeholder="请输入开发语言" maxlength="64" class="form-control" />
+                                    <span class="input-group-addon">环境:</span>
+                                    <input type="text" id="shopattr_condition" name="shopattr_condition" placeholder="请输入开发环境" maxlength="32" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">数据库:</span>
+                                    <input type="text" id="shopattr_database" name="shopattr_database" placeholder="请输入数据库" maxlength="32" class="form-control" />
+                                    <span class="input-group-addon">架构(B/S):</span>
+                                    <input type="text" id="shopattr_framework" name="shopattr_framework" placeholder="请输入架构" maxlength="32" class="form-control" />
+                                    <span class="input-group-addon">管理工具(git):</span>
+                                    <input type="text" id="shopattr_manage" name="shopattr_manage" placeholder="请输入管理工具" maxlength="32" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">大小:</span>
+                                    <input type="text" id="shopattr_size" name="shopattr_size" placeholder="请输入大小" maxlength="32" class="form-control" />
+                                    <span class="input-group-addon">格式:</span>
+                                    <input type="text" id="shopattr_utf" name="shopattr_utf" placeholder="请输入编码格式" maxlength="32" class="form-control" />
+                                    <span class="input-group-addon">演示地址:</span>
+                                    <input type="text" id="shopattr_weburl" name="shopattr_weburl" placeholder="请输入演示地址" maxlength="100" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">是否开源:</span>
+                                    <select class="form-control" id="shopattr_isopensource">
+                                        <option value="true">开源</option>
+                                        <option value="false">不开源</option>
+                                    </select>
+                                    <span class="input-group-addon">开源协议:</span>
+                                    <input type="text" id="shopattr_opensource" name="shopattr_opensource" placeholder="请输入开源协议" maxlength="100" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">博客地址:</span>
+                                    <input type="text" id="shopattr_blogaddress" name="shopattr_blogaddress" placeholder="请输入博客地址" maxlength="100" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">备注(32字以内):</span>
+                                    <input type="text" id="shopattr_memo" name="shopattr_memo" placeholder="请输入商品备注" maxlength="100" class="form-control" />
+                                </div>
+                            </div>
+                        </form>
+                        <hr />
+                        <div style="text-align:center">
+                            <button type="button" class="btn btn-primary" id="btnAddShopAttrData"><i class="icon-ok"></i>确定</button>
+                            <span style="color:red">* 商品属性设置完成后，请设置商品图片</span>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="shopimage_manage">
+                        <div>
+                            <table class="table">
+                                <caption>商品SKU对应版本展示</caption>
+                                <thead>
+                                    <tr>
+                                        <th>商品SKU</th>
+                                        <th>图片</th>
+                                        <th>是否默认</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <hr />
+                        <form id="shopskuOperation" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">选择商品SKU:</span>
+                                    <select id="shopsku_id" class="selectpicker show-tick form-control" data-live-search="true"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">图片上传:</span>
+                                    <input type="file" id="shopimage_address" name="shopimage_address" style="float:left;padding-left:30px;" />
+                                    <input type="button" id="btnUploadShopImageImg" value="上传并且添加" class="btn btn-success" style="float: left;" />
+                                    <div id="image_show" style="float: left;border: 1px solid #CAC3C3;background: #FFFFFF;margin-left: 20px;box-shadow: 5px 5px 5px #777575;"></div>
+                                </div>
+                            </div>
+                        </form>
+                        <hr />
+                        <div style="text-align:center">
+                            <span style="color:red">*设置完成后，单击（×）按钮关闭浮层</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*设置优惠浮层*@
+<div class="modal fade" id="FavorableModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title" id="Head_Favorable_Title">商品(***)优惠设置</h4>
+            </div>
+            <div class="modal-body">
+                <p style="color:red">备注：商品优惠设置暂时只能设置1个、如果优惠信息已存在则只能修改</p>
+                <form id="FavorableOperation" method="post" class="form-horizontal">
+                    <input type="hidden" id="shop_favorable_id" name="shop_favorable_id" />
+                    <input type="hidden" id="shopcoupon_id" name="shopcoupon_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">优惠类别:</span>
+                            <input type="text" id="shopcoupon_type" name="shopcoupon_type" placeholder="请输入优惠类别" maxlength="32" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">优惠名称:</span>
+                            <input type="text" id="shopcoupon_name" name="shopcoupon_name" placeholder="请输入优惠名称" maxlength="64" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">优惠额度:</span>
+                            <input type="text" id="shopcoupon_money" name="shopcoupon_money" placeholder="请输入优惠额度" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">结束时间:</span>
+                            <input type="text" id="endtime" name="endtime" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">是否结束:</span>
+                            <select class="form-control" id="shopcoupon_disable" name="shopcoupon_disable">
+                                <option value="0">优惠未结束</option>
+                                <option value="1">优惠已结束</option>
+                            </select>
+                        </div>
+                    </div>   
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnAddUpdateShopCoupon"><i class="icon-ok"></i>添加/修改</button>
+                <button type="button" class="btn btn-primary" id="btnDeleteShopCoupon"><i class="icon-ok"></i>删除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 启用禁用模型 *@
+<div class="modal fade" id="DisableEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title"><span id="disableName">***</span>：数据禁用启用管理</h4>
+            </div>
+            <div class="modal-body">
+                <form id="disableOperation" method="post" class="form-horizontal">
+                    <p>友情提示：禁用启用状态都会有数据记录</p>
+                    <input type="hidden" id="id" name="id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">描述:</span>
+                            <textarea rows="3" id="disable_desc" name="disable_desc" placeholder="请输入版本描述" maxlength="200" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnDisable"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*添加详情浮层*@
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title" id="HeadTitle">商品信息详情</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <p style="color:red">①：商品详情暂时只显示商品信息，如需查看商品SKU、商品属性、商品图片、商品优惠，请在修改或者设置优惠中查看</p>
+                </div>
+                <hr />
+                <form id="shopDetail" method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">名称:</span>
+                            <input type="text" id="detail_shop_name" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">简介:</span>
+                            <input type="text" id="detail_shop_memo" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">编号:</span>
+                            <input type="text" id="detail_shop_number" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">优惠:</span>
+                            <input type="text" id="detail_shop_isdiscount" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">创建时间:</span>
+                            <input type="text" id="detail_createtime" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">状态:</span>
+                            <input type="text" id="detail_diable" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">禁用原因:</span>
+                            <textarea rows="3" id="detail_disabledesc" readonly="readonly" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">图片:</span>
+                            <div id="detail_shop_defaultimg" style="float: left;border: 1px solid #CAC3C3;background: #FFFFFF;margin-left: 20px;box-shadow: 5px 5px 5px #777575;"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">商品详情:</span>
+                            <textarea id="detail_shop_desc" style="height:200px;max-height:200px;" readonly="readonly"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/admin/js/store/shop.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    $(function () {
+        pls.admin.shop.init();
+    })
+</script>

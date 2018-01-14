@@ -1,0 +1,84 @@
+﻿@model IQueryable<Pls.Entity.OrderPay>
+@{
+    ViewBag.Title = "订单确认页";
+}
+@section css
+{
+    <link href="~/front/css/pay.css" rel="stylesheet" asp-append-version="true" />
+}
+<div style="border-top:2px solid #8c8888;width:100%;padding:10px;">
+    <div class="maincontent col-xs-12 col-sm-12 col-md-12 col-lg-10">
+        <div class="pagetitle">填写并核对订单信息</div><hr class="seperate">
+        <div class="orderinformation">
+            <div class="deliverylist">
+                <h3>支付清单</h3>
+                @{
+                    foreach (var orderpay in Model)
+                    {
+                        <input type="hidden" id="hidden_order_number" value="@orderpay.order_number" />
+                        <input type="hidden" id="hidden_order_id" value="@orderpay.order_id" />
+                        <div class="listbox">
+                            <div class="distributmode col-xs-12 col-sm-12 col-md-4 col-lg-3">
+                                <h3>收货方式</h3><div><div class="waybox">邮箱接收</div><span class="wayselected" style="left:112px;"></span></div>
+                            </div>
+                            <div class="commodity col-xs-12 col-sm-12 col-md-8 col-lg-9">
+                                <h3>商家：初心商城</h3>
+                                @if (!string.IsNullOrEmpty(orderpay.shopcoupon_type))
+                                {
+                                    <div class="fullcut" data-toggle="tooltip" data-placement="top" title="优惠金额为：¥@orderpay.shopcoupon_money">
+                                        <b>@orderpay.shopcoupon_type</b><span>@orderpay.shopcoupon_name</span><span></span>
+                                    </div>
+                                }
+                                <div class="commodityarea">
+                                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"><img src="@orderpay.shop_defaultimg" class="img img-responsive"></div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="line-height:2">
+                                        <p><a href="/Home/Detail?id=@orderpay.shop_id">@orderpay.shop_name</a></p>
+                                        <p style="text-align:center">@orderpay.shop_code</p>
+                                    </div>
+                                    <div class="unitprice col-xs-12 col-sm-2 col-md-2 col-lg-2"><span>￥</span><em>@orderpay.shop_currentprice</em></div>
+                                    <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1"><span>*</span><em>1</em></div>
+                                    <div style="clear:both;"></div><hr>
+                                </div>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </div>
+                        <div style="clear:both;"></div>
+                    }
+                }
+            </div>
+            <div style="clear:both;"></div>
+            <hr class="division">
+        </div>
+        <div class="remark">
+            <textarea id="order_memo" rows="3" class="form-control" maxlength="100" placeholder="如果您有特殊的需求，请填写(可为空)"></textarea>
+        </div>
+        <div class="disdetail">
+            <ul>
+                @{
+                    var shop_currentprice = Model.Sum(c => c.shop_currentprice);
+                    var shopcoupon_money = @Model.Sum(c => c.shopcoupon_money);
+                    double? shop_actualprice = shop_currentprice - shopcoupon_money;
+                    <li><b>@Model.Count()</b>件商品，总金额：<span class="currency">￥</span><em id="shop_currentprice">@shop_currentprice</em></li>
+                    if (shopcoupon_money != 0)
+                    {
+                        <li><span><input type="checkbox" checked="checked">优惠金额：</span><span class="currency">￥</span><em id="shopcoupon_money">@shopcoupon_money</em></li>
+                    }
+                    <li>应付总额：<span class="currency">￥</span><em id="shop_actualprice">@shop_actualprice</em></li>
+                }
+           </ul>
+           <button class="btnpay" id="btnPay" data-toggle="modal">立即支付</button>
+        </div>
+    </div>
+</div>
+<div style="clear:both;"></div>
+@await Html.PartialAsync("_PayDialog")
+
+@section scripts
+{
+    <script src="~/front/js/pay.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            pls.front.pay.init();
+        })
+    </script>
+}

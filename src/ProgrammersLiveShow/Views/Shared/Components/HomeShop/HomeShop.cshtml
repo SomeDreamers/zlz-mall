@@ -1,0 +1,82 @@
+﻿<!--返回首页对版本的显示-->
+@model Pls.Entity.ShopClassifyInfo
+
+@*0：首页各个模块 1:详情页热销榜*@
+@if (Model != null)
+{
+    if (Model.page_type == 0)
+    {
+        <div class="list">
+            @foreach (var shop in Model.shopHomeInfos)
+            {
+                <div class="listitem col-sm-3">
+                    <div class="item">
+                        <a href="/Home/Detail?id=@shop.shop_id">
+                            <div class="img">
+                                @if (string.IsNullOrEmpty(shop.shop_defaultimg))
+                                {
+                                    <img src="~/img/ready.jpg" class="img-responsive" alt="商品默认图片" />
+                                }
+                                else
+                                {
+                                    <img src="@shop.shop_defaultimg" class="img-responsive" alt="@shop.shop_name" />
+                                }
+                            </div>
+                            <div class="info">
+                                <div class="price">@(string.IsNullOrEmpty(shop.shop_money) ? Html.Raw("<strong>免费</strong>") : Html.Raw("<span>¥</span><strong>" + shop.shop_money + "</strong>"))</div>
+                                <div class="cumscount"><span>@(shop.shop_paycount == null ? 0 : shop.shop_paycount )人购买 </span></div>
+                                <div style="clear:both;"></div>
+                                <h5 class="title">
+                                    @if (shop.shop_isdiscount)
+                                    {
+                                        <span class='disco'>优惠</span>
+                                    }
+                                    <a href="/Home/Detail?id=@shop.shop_id">@shop.shop_name</a>
+                                </h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+            <div style="clear:both;"></div>
+        </div>
+        <div style="clear:both;"></div>
+    }
+    @if (Model.page_type == 1)
+    {
+        <div class="recommend">
+            <div class="categary">热销榜</div>
+            @foreach (var shopc in Model.shopHomeInfos)
+            {
+                <div class="listitem">
+                    <div class="item">
+                        <a href="/Home/Detail?id=@shopc.shop_id">
+                            <div class="img">
+                                @if (string.IsNullOrEmpty(shopc.shop_defaultimg))
+                                {
+                                    <img src="~/img/ready.jpg" class="img-responsive" alt="商品默认图片" />
+                                }
+                                else
+                                {
+                                    <img src="@shopc.shop_defaultimg" class="img-responsive" alt="@shopc.shop_name" />
+                                }
+                            </div>
+                            <div class="info">
+                                <div class="price">@(string.IsNullOrEmpty(shopc.shop_money) ? Html.Raw("<strong>免费</strong>") : Html.Raw("<span>¥</span><strong>" + shopc.shop_money + "</strong>"))</div>
+                                <div class="cumscount">@(shopc.shop_paycount == null ? 0 : shopc.shop_paycount )人购买 </div>
+                                <div style="clear:both;"></div>
+                                <h5 class="title">
+                                    @if (shopc.shop_isdiscount)
+                                    {
+                                        <span class='disco'>优惠</span>
+                                    }
+                                    <a href="/Home/Detail?id=@shopc.shop_id">@shopc.shop_name</a>
+                                </h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}

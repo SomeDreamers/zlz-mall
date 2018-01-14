@@ -1,0 +1,276 @@
+/*
+    作者：KeyBaby
+    功能：用户登录注册CSS
+    时间：2016-11-20
+*/
+form-control{
+        border-radius: 0px;
+ }
+.input-group-addon{
+    color: #cecece;
+    border-radius: 0px;
+}
+button.btn.sign-up-main{
+    height: 40px;
+    line-height: 40px;
+    border-radius: 0px;
+    background-color: #e4393c;
+    border:1px solid #e85356;
+}
+.modal{
+    line-height: 50px;
+}
+#usernamechoise{
+	display:none;
+	background:transparent;
+	margin-top:50px;
+	margin-left:15px;
+	margin-right:15px;
+	overflow-y: hidden;
+}
+.modal-header{
+	background:white;
+}
+.modal-body{
+	background:white;
+}
+.modal-body>.form-group>.input-group{
+	line-height:normal;
+}
+.modal-body>.form-group{
+	margin-top:15px;
+}
+.choise{
+	border:1px solid #c3bfbf;
+	height:80px;
+	width:100%;
+}
+.container{
+	background:white;
+}
+.leftbg{
+	padding:0px;
+    background:#0068b7;
+	overflow:hidden;
+}
+.rightlogin{
+	padding-bottom:20px;
+}
+.loginbox{
+	background:white;
+	float:right;
+	margin-top:40px;
+	padding-left:0px;
+	padding-right:0px;
+}
+.active>a{
+	font-weight:700;
+	font-size:20px;
+}
+.warning{
+	height:30px;
+	line-height:30px;
+	text-align:center;
+	border:1px solid #f4f4f4;
+	margin-top:15px;
+	color:#ffc627;
+}
+.warning>i{
+	margin-right:5px;
+}
+form{
+	padding:10px 15px 10px 15px;
+}
+#login_regist_TabContent{
+	padding:0px 15px;
+}
+.form-group{
+	margin-top:15px;
+}
+.forderpwd{
+	float:right;padding-right:0px;text-align:right;color:#666;
+}
+.forderpwdbox{
+	display: block;
+	min-height: 20px;
+	padding-left: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	vertical-align: middle;
+}
+label{
+	font-weight:normal;
+}
+.loginway{
+	height:50px;
+	width:100%;
+	background:#fcfcfc;
+}
+.loginway>ul{
+	padding-left:15px;
+	background:#e6e2e2;
+}
+.loginway>ul>li{
+	display:inline-block;
+	line-height:50px;
+	width:50px;
+	font-size:14px;
+	text-align:center;
+}
+.loginway>ul>li>a{
+	color:#666;
+}
+.loginway>ul>span{
+	color:#f4f4f4;
+}
+.login_regist_Tab{
+	height:60px;
+	border-bottom:1px solid #f4f4f4;
+}
+.login_regist_Tab>a{
+	color:#666;
+	line-height:60px;
+	text-align:center;
+	font-weight:700;
+	font-size:20px;
+}
+.loginway{
+	height:50px;
+	width:100%;
+	background:#fcfcfc;
+}
+.loginwaylist{
+	padding-left:15px;
+	background:#e6e2e2;
+}
+.loginwaylist>li{
+	display:inline-block;
+	line-height:50px;
+	width:76px;
+	font-size:14px;
+	text-align:center;
+}
+.loginwaylist>li>a{
+	color:#666;
+}
+ .maincontent{
+    background:#0068b7;
+    }
+@media (min-width: 1200px){
+    .maincontent{
+        background:#0068b7;
+        width:inherit;
+        padding-left:100px;
+    }
+    .formiddle{
+        width: 1100px;
+    }
+    .leftbg{
+        width:1100px;
+        min-height:446px !important; 
+        background: url("http://images.chuxinm.com/chuxinm/loginbg.png") no-repeat 11px;
+        min-height: 446px !important;
+        background-size: 733px 535px;
+    } 
+}
+::-webkit-scrollbar {
+    width:0px;
+}
+.verbottom{
+    list-style: none;
+    margin:0 auto;
+}
+.verbottom>li{
+    width:15%;
+    text-align: center;
+    display: inline-block;
+}
+@media (min-width: 970px) and (max-width:1122px){
+    #usernamechoise{
+     	margin-left: 200px;
+     	margin-right: 200px;
+		width:auto;
+    } 	
+    .modal{
+        height: auto;
+    }
+}
+@media screen and (min-width: 768px){
+	.modal-dialog{width: inherit !important;} 
+}
+@media (min-width: 1122px) and (max-width:3000px){
+    #usernamechoise{
+        margin-left: 400px;
+        margin-right: 400px;
+    }
+    .modal{height: auto;}
+}
+@media (min-width: 768px) and (max-width:970px){
+    #usernamechoise{
+        margin-left: 100px;
+        margin-right: 100px;
+        width:auto;
+    }
+}
+.choiseitem{
+    list-style: none;
+    cursor: pointer;
+}
+.choiseitem>li{
+	display: inline-block;
+}
+.toplogo{
+	margin-left:100px;
+	padding:10px 5px 10px 5px;
+}
+ button.btn.sign-up-main {
+    height: 40px;
+    line-height: 40px;
+    border-radius: 0px;
+    background-color: #e4393c;
+    border: 1px solid #e85356;
+}
+button.btn.sign-up-main {
+    position: relative;
+    height: 50px;
+    margin: 0;
+    padding: 0 20px;
+    vertical-align: middle;
+    border: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 50px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    text-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -o-transition: all .3s;
+    -moz-transition: all .3s;
+    -webkit-transition: all .3s;
+    -ms-transition: all .3s;
+    transition: all .3s;
+}
+.btn-block {
+    display: block;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+}
+.btn-success {
+    color: #fff;
+    background:#0068b7 !important;
+}
+.container {
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.loginSkip{
+    color:#337ab7
+}
+.regestSkip {
+    color: #666;
+}

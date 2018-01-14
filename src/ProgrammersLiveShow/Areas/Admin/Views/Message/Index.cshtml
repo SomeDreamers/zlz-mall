@@ -1,0 +1,169 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="panel-body" style="padding:0">
+    <div class="panel panel-default">
+        <div class="panel-heading"></div>
+        <div class="panel-body">
+            <form id="formSearch" class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-1" for="user_email_search">用户邮箱：</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="user_email_search">
+                    </div>
+                    <label class="control-label col-sm-1" for="distable_status_search">状态：</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" id="distable_status_search">
+                            <option value="-1">全部</option>
+                            <option value="1">禁用</option>
+                            <option value="0">不禁用</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" id="btnQueryList" class="btn btn-primary"><i class="icon-search"></i>查询</button>
+                        <button type="button" id="btnReset" class="btn btn-primary"><i class="icon-remove"></i>清空</button>
+                    </div>
+                </div>
+            </form>
+            <hr />
+            <div>
+                <table id="messageinfo"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ButtionInfo")
+
+
+@*详情浮层*@
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">留言信息详情</h4>
+            </div>
+            <div class="modal-body">
+                <form id="messageDetail" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">留言Id:</span>
+                            <input type="text" id="detail_message_id" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">用户邮箱:</span>
+                            <input type="text" id="detail_user_email" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">留言类型:</span>
+                            <input type="text" id="detail_message_type" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">留言内容:</span>
+                            <textarea rows="3" id="detail_message_desc" readonly="readonly" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">是否已读:</span>
+                            <input type="text" id="detail_message_read" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">是否处理:</span>
+                            <input type="text" id="detail_message_solve" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">创建时间</span>
+                            <input type="text" id="detail_message_createtime" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">是否禁用：</span>
+                            <input type="text" id="detail_message_disable" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">禁用原因:</span>
+                            <textarea rows="4" id="detail_message_disabledesc" readonly="readonly" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 启用禁用模型 *@
+<div class="modal fade" id="DisableEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title"><span id="disableName">***</span>：数据禁用启用管理</h4>
+            </div>
+            <div class="modal-body">
+                <form id="disableOperation" method="post" class="form-horizontal">
+                    <p>友情提示：禁用启用状态都会有数据记录</p>
+                    <input type="hidden" id="id" name="id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">描述:</span>
+                            <textarea rows="3" id="disable_desc" name="disable_desc" placeholder="请输入留言描述" maxlength="200" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnDisable"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*删除模型*@
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">删除(<span id="Messge_Head_Title">***</span>)留言确认页面</h4>
+            </div>
+            <div class="modal-body">
+                <form id="message_Detele" method="post" class="form-horizontal">
+                    <input type="hidden" id="delete_messge_id" name="delete_messge_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            您确认要将<span id="Messge_Head_Title_OK">***</span>留言删除吗？删除之后无法回滚，请您确认！
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnDeleteMessage"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/admin/js/help/message.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    $(function () {
+        pls.admin.message.init();
+    })
+</script>

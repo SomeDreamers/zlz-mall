@@ -1,0 +1,255 @@
+/*
+    作者：KeyBaby
+    功能：支付页面CSS配置
+    时间：2016-11-20
+*/
+ul{
+	list-style: none;
+}
+h3{
+	margin-left: 26px;
+	font-size: 14px;
+	color:#333;
+	height: 30px;
+	line-height: 30px;
+	font-weight: bolder;
+}
+.pagetitle{
+	color:#666;
+	font-size:16px;
+	padding-left:26px;
+}
+.seperate{
+	margin-left:26px;
+	color:#cccccc;
+    margin-top:0px;
+}
+.selecteditem{
+	border:2px solid #e4393c;
+}
+.orderinformation{
+	border:1px solid #cccccc;
+	margin-left: 26px;
+}
+.division{
+	margin-top:15px;margin-left:26px;margin-right:26px;
+	box-shadow: none;
+	border-top: 1px solid #f1ebeb;
+}
+.selected{
+	display: block;
+    position: relative;
+    top:-14px;
+    left:186px;
+    width: 12px;
+    height: 12px;
+    overflow: hidden;
+    background: url('../img/checked-icon.png') no-repeat;
+}
+.operation{
+	position: relative;
+	left: 80px;
+}
+.operation>i{
+	height: 30px;
+	line-height: 30px;
+	margin-left: 10px;
+}
+.operation>i:hover{
+	color:#ccc;
+}
+.paymentway>ul>li{
+	height: 30px;
+	line-height: 30px;
+	border:1px solid #cccccc;
+	text-align: center;
+	display: inline-block;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-left: 20px;
+}
+.wayselected {
+    display: block;
+    position: relative;
+    top: -14px;
+    left: 50px;
+    height: 12px;
+    width: 12px;
+    background: url('../img/checked-icon.png') no-repeat;
+}
+.disdetail>ul>li{
+	line-height: 30px;
+	color:#666;
+	font-size:14px;
+	text-align: right;
+	width:auto;
+	vertical-align:right;
+}
+.maincontent{
+	margin-bottom:50px;
+}
+@media(max-width: 768px){
+	.maincontent{
+	    margin:0 auto !important;
+	}
+}
+@media(min-width: 992px){
+	.maincontent{
+	    margin:0 100px !important;
+	}
+}
+.btnpay{
+	width:200px;height:40px;line-height:40px;color:white;background:#e4393c;font-weight:bold;font-family:'黑体';border:1px solid #e4393c;border-radius:5px;float:right;
+}
+.disdetail{
+	margin-top:20px;float:right;width:100%;
+}
+.disdetail>ul>li:last-child{
+	font-weight:bolder;font-size:16px;height:60px;background:#e8e8e8;
+}
+.currency{
+	color:#e4393c;
+	font-weight: bold;
+}
+.disdetail>ul>li:last-child>em{
+	color:#e4393c;
+	line-height:60px;
+}
+.disdetail>ul>li>em{
+	color:#e4393c;
+    margin-right: 20px;
+}
+.glyphicon-chevron-down{
+	margin-left:5px;
+}
+.remark>input{
+	float:left;margin-left:5px;width:400px;padding:5px;margin-top:0px;
+}
+h5{
+	margin-left:26px;float:left;
+}
+.remark{
+	margin-left:26px;margin-top:15px;
+}
+hr{
+	border-top:1px solid #cccccc;box-shadow:none;margin-bottom:0px !important;
+}
+.distributmode{
+	border:1px solid #cccccc;background:#f7f7f7;min-height:184px;
+}
+.distributmode>h3{
+	color:#929292;
+}
+.waybox{
+	border:2px solid #e4393c;height:40px;line-height:40px;margin-left:26px;width:100px;text-align:center;
+}
+.commodity{
+	border:1px solid #cccccc;background:#f3fbfe;min-height:184px;
+}
+.commodityarea{
+    margin-left: 10px;
+    margin-top: 8px;
+}
+.commodity>h3{
+	margin-bottom:0px;
+}
+.fullcut>b{
+	color:white;
+    background:#e4393c;
+    font-weight:normal;
+    height:30px;
+    line-height:30px;
+    padding:5px;
+    margin-left:26px;
+    margin-right:5px;
+    font-size:12px;
+    margin-top:0px;
+}
+.unitprice{
+	color:#e4393c;
+    font-weight:bolder;
+}
+.listbox{
+	border:1px solid #cccccc;
+    margin-top:15px;
+    margin-left:26px;
+    margin-right:26px;
+    max-height:200px;
+    margin-bottom:10px;
+}
+#payModel{
+	width:auto;
+	height: auto;
+	float: left;
+}
+.payway{
+    text-align: center;
+}
+.payway > li:first-child>p>img {
+    margin-top: -7px;
+    
+}
+.payway > li:last-child>img {
+    border-radius: 30px;
+    border: 9px solid #92BCD5;
+    width: 236px;
+    height: 236px;
+    
+}
+.payway>li{
+	display: inline-block;
+}
+.payway>li>p{
+	font-weight: bold;
+	color:#666;
+}
+.payway>li>img{
+	height: 250px;
+	width: 250px
+}
+.modal-header{
+	font-weight: bold;
+	color:#666;
+}
+.prompt{
+    line-height: 30px;
+    border: 1px dashed #e4393c;
+    padding:5px 5px 5px 10px;
+}
+.modal-body{
+	background:white;
+}
+.prompt > span {
+    color:#e4393c;
+    font-size:20px;
+    font-style:italic;
+    font-weight:bold;
+
+}
+.prompt > em{
+    color:#e4393c;
+    font-size:20px;
+    font-style:italic;
+    font-weight:bold;
+
+}
+.stay{
+	color: #E4393C;background: #FFFFFF;border:#cccccc;
+}
+.cart{
+	color:white;background:#E4393C;
+}
+.tooltip-inner {
+ background:#e4393c;
+ color:#fff !important;
+ font-size:15px;
+ border-radius:5px;
+ border:1px solid #fff;
+}
+.tooltip-arrow {
+  background:#fff;
+  color:#cccccc;
+}
+div[role="tooltip"] { 
+    background: #fff;
+}

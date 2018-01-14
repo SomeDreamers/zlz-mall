@@ -1,0 +1,199 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="panel-body" style="padding:0">
+    <div class="panel panel-default">
+        <div class="panel-heading"></div>
+        <div class="panel-body">         
+            <hr />
+            <p style="color:blue">①：任何超级管理员操作此页面请慎重操作!</p>
+            <p style="color:blue">②：修改的时候如果您选择修改了权限父Id,则不能实时的去更新结构，请刷新table表格!</p>
+            <p style="color:blue">③：修改完新旧功能之后导航栏不能实时的去变化，如果您更新完新旧功能之后请重新刷新页面加载!</p>
+            <div>
+                <table id="actioninfo"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ButtionInfo")
+
+@*添加编辑浮层*@
+<div class="modal fade" id="AddEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title" id="HeadTitle">权限信息添加</h4>
+            </div>
+            <div class="modal-body">
+                <form id="actionOperation" method="post" class="form-horizontal">
+                    <input type="hidden" id="parent_id" name="parent_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">权限名称:</span>
+                            <input type="text" id="action_name" name="action_name" placeholder="请输入权限名称" maxlength="64" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">权限Url:</span>
+                            <input type="text" id="action_url" name="action_url" placeholder="请输入权限Url" maxlength="50" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">权限父Id:</span>
+                            <input type="text" id="action_parentid" name="action_parentid" placeholder="请选择权限父Id(可为空)" class="form-control" />
+                            <div id="action_menuContent" class="menuContent" style="display:none; position: absolute;z-index:9999">
+                                <ul id="action_parent_tree" class="ztree" style="z-index:9999"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">图标:</span>
+                            <input type="text" id="action_icon" name="action_icon" placeholder="请输入图标(系统帮助下Icon图标中查找)" maxlength="40" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">排序:</span>
+                            <input type="text" id="action_sort" name="action_sort" placeholder="请输入排序(只能整形)" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">事件/Id:</span>
+                            <input type="text" id="action_event" name="action_event" placeholder="请输入事件/Id" maxlength="32" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">权限类型:</span>
+                            <select id="action_type" class="selectpicker show-tick form-control" data-live-search="true">
+                                <option value="1">前台导航</option>
+                                <option value="2" selected="selected">后台左侧导航</option>
+                                <option value="3">普通按钮</option>
+                                <option value="4">后台查询</option>
+                                <option value="5">普通按钮-不显示</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnAddData"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 启用禁用模型 *@
+<div class="modal fade" id="DisableEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title"><span id="disableName">***</span>：数据禁用启用管理</h4>
+            </div>
+            <div class="modal-body">
+                <form id="disableOperation" method="post" class="form-horizontal">
+                    <p>友情提示：禁用启用状态都会有数据记录</p>
+                    <input type="hidden" id="id" name="id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">描述:</span>
+                            <textarea rows="3" id="disable_desc" name="disable_desc" placeholder="请输入部门描述" maxlength="200" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnDisable"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 详情浮层 *@
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">用户信息详情</h4>
+            </div>
+            <div class="modal-body">
+                <form id="actionDetail" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">权限Id:</span>
+                            <input type="text" id="detail_action_id" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">权限名称:</span>
+                            <input type="text" id="detail_action_name" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">权限父Id:</span>
+                            <input type="text" id="detail_action_parentid" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">权限URL:</span>
+                            <input type="text" id="detail_action_url" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">权限Icon:</span>
+                            <input type="text" id="detail_action_icon" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">权限排序:</span>
+                            <input type="text" id="detail_action_sort" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">事件或者按钮名称:</span>
+                            <input type="text" id="detail_action_event" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">菜单来源:</span>
+                            <input type="text" id="detail_action_type" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">是否新功能:</span>
+                            <input type="text" id="detail_action_newaction" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">是否禁用:</span>
+                            <input type="text" id="detail_action_disable" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">创建时间:</span>
+                            <input type="text" id="detail_action_createtime" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">禁用原因:</span>
+                            <textarea rows="3" id="detail_action_disabledesc" readonly="readonly" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/admin/js/limit/action.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    $(function () {
+        pls.admin.action.init();
+    })
+</script>

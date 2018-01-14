@@ -1,0 +1,275 @@
+﻿@{
+    Layout = null;
+}
+<div class="panel-body" style="padding:0">
+    <div class="panel panel-default">
+        <div class="panel-heading"></div>
+        <div class="panel-body">
+            <form id="formSearch" class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label" for="user_email_search">邮箱:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="user_email_search" placeholder="请输入用户邮箱">
+                    </div>
+                    <label class="control-label" for="order_number_search">编号:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="order_number_search" placeholder="请输入订单编号">
+                    </div>
+                    <label class="control-label" for="order_paystatus_search">支付:</label>
+                    <div class="col-sm-1">
+                        <select class="form-control" id="order_paystatus_search">
+                            <option value="-1">全部</option>
+                            <option value="2">已支付</option>
+                            <option value="1">未支付</option>
+                        </select>
+                    </div>
+                    <label class="control-label" for="distable_status">状态:</label>
+                    <div class="col-sm-1">
+                        <select class="form-control" id="distable_status">
+                            <option value="-1">全部</option>
+                            <option value="0">启用</option>
+                            <option value="1">禁用</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" id="btnQueryList" class="btn btn-primary"><i class="icon-search"></i>查询</button>
+                        <button type="button" id="btnReset" class="btn btn-primary"><i class="icon-remove"></i>清空</button>
+                    </div>
+                </div>
+            </form>
+            <hr />
+            <div>
+                <table id="orderInfo"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ButtionInfo")
+
+@*设置支付模型*@
+<div class="modal fade" id="PayModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">设置订单：(<span class="order_Head_Title">***</span>)支付确认页面</h4>
+            </div>
+            <div class="modal-body">
+                <form id="order_Pay" method="post" class="form-horizontal">
+                    <input type="hidden" id="pay_order_id" name="pay_order_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            您确认要将订单<span class="order_Head_Title">***</span>设置为已支付状态吗？设置之后该订单拥有者将收到下载链接等信息，请您确认，无法回滚！
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="pay_type">支付方式:</label>
+                        <div class="col-sm-1">
+                            <select id="pay_type" class="form-control" >
+                                <option value="1" selected="selected">支付宝支付</option>
+                                <option value="2">微信支付</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnPay"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*版本升级实现*@
+<div class="modal fade" id="UpgradeOrder" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:60%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">订单编号为：(<span id="order_Head_Title">***</span>)升级</h4>
+            </div>
+            <div class="modal-body">
+                <form id="UpgradeOrderOperation" method="post" class="form-horizontal">
+                    <input type="hidden" id="upgrade_order_id" name="upgrade_order_id" />
+                    <input type="hidden" id="upgrade_shopsku_id" name="upgrade_shopsku_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            您确认要将订单编号为（<span id="order_Head_Title_OK">***</span>）的下的订单升级吗？升级之后无法还原，请确认收货后在升级!!!(此功能慎用)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <table class="table table-hover">
+                            <caption>此订单下的商品详情</caption>
+                            <thead>
+                                <tr>
+                                    <th>商品名称</th>
+                                    <th>商品Code</th>
+                                    <th>商品价格</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody_upgrade"></tbody>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="upgrade_name">商品升级选择SKU:</label>
+                        <div class="col-sm-5">
+                            <select id="upgrade_name" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div style="margin-left:44px;"><p style="color:red" id="warning_tip"></p></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnUpgradeOrder"><i class="icon-ok"></i>确定升级</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 启用禁用模型 *@
+<div class="modal fade" id="DisableEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title"><span id="disableName">***</span>：数据禁用启用管理</h4>
+            </div>
+            <div class="modal-body">
+                <form id="disableOperation" method="post" class="form-horizontal">
+                    <p>友情提示：禁用启用状态都会有数据记录</p>
+                    <input type="hidden" id="id" name="id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">描述:</span>
+                            <textarea rows="3" id="disable_desc" name="disable_desc" placeholder="请输入描述" maxlength="200" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnDisable"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*订单详情*@
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">订单信息详情</h4>
+            </div>
+            <div class="modal-body">
+                <form id="orderDetail" class="form-horizontal">
+                    <input type="hidden" id="detail_order_id" name="detail_order_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">订单编号:</span>
+                            <input type="text" id="detail_order_number" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">创建人:</span>
+                            <input type="text" id="detail_user_email" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">订单总价钱:</span>
+                            <input type="text" id="detail_order_total" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">订单总优惠:</span>
+                            <input type="text" id="detail_order_privilege" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">订单实际支付金额:</span>
+                            <input type="text" id="detail_order_actualpay" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">支付状态:</span>
+                            <input type="text" id="detail_order_paystatus" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">支付方式:</span>
+                            <input type="text" id="detail_order_payway" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">发货状态:</span>
+                            <input type="text" id="detail_order_goods" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">删除状态:</span>
+                            <input type="text" id="detail_order_delete" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">创建时间</span>
+                            <input type="text" id="detail_order_createtime" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">是否禁用：</span>
+                            <input type="text" id="detail_order_disable" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">订单备注:</span>
+                            <textarea rows="3" id="detail_order_memo" readonly="readonly" class="form-control"></textarea>
+                            <span class="input-group-addon">禁用原因:</span>
+                            <textarea rows="3" id="detail_order_disabledesc" readonly="readonly" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <table class="table table-hover">
+                            <caption>订单商品详情</caption>
+                            <thead>
+                                <tr>
+                                    <th>商品名称</th>
+                                    <th>商品编号</th>
+                                    <th>商品Code</th>
+                                    <th>商品数量</th>
+                                    <th>商品价格</th>
+                                    <th>商品原价</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody"></tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*删除模型*@
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">删除订单：(<span class="order_Head_Title">***</span>)确认页面</h4>
+            </div>
+            <div class="modal-body">
+                <form id="order_Detele" method="post" class="form-horizontal">
+                    <input type="hidden" id="delete_order_id" name="delete_order_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            您确认要将订单<span class="order_Head_Title">***</span>删除吗？建议只能删除test用户和系统用户创建的订单，其它人创建的订单超过7天手动禁用，如果您选择删除，则无法回滚，请您确认！
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnDelete"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/admin/js/store/order.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    $(function () {
+        pls.admin.order.init();
+    })
+</script>

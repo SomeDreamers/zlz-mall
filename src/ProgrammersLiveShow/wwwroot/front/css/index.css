@@ -1,0 +1,268 @@
+/*
+    作者：KeyBaby
+    功能：项目首页CSS
+    时间：2016-11-20
+*/
+
+/*顶部版本升级提示dialog*/
+#versionupgrade{
+    position: initial;
+    background: #f0ad4e !important;
+    height: 28px !important;
+    font-size: 14px;
+    text-align: center;
+    font-family: '黑体'
+}
+.modal{
+    line-height:30px;
+}
+#countdown{
+      color:#fff;
+}
+#versionupgrade .close {
+    margin-top: -26px;   
+}
+/*商品列表*/
+.list {
+    margin-bottom:10px;
+}
+.item:hover {
+    border:1px solid #e4393c;
+
+}
+.listitem {
+    margin-bottom:5px;
+}
+.item {
+    border:1px solid rgb(237,237,237);
+}
+.info {
+    padding:10px 10px 0px 10px;background:white;border-top:0px;width:inherit;
+}
+.price {
+    float:left;
+    color:#e4393c;
+}
+.price > strong {
+    font-size:16px;
+}
+.cumscount {
+    float:right;
+    color:#9e9e9e;
+}
+.cumscount > span {
+    font-size:13px;
+}
+.disco{
+    color:white;
+    background:#e4393c;
+    font-size:10px;
+    padding:2px;
+}
+.title > a {
+    color:#666;
+    font-size:14px;
+    line-height:20px;
+
+}
+@media screen and (min-width: 992px) {
+    .develop > .list > .listitem > .item >a> .img > img {
+        min-height:163.42px;
+        max-height:163.42px;
+    }
+    .lasted > .list > .listitem > .item > a > .img > img {
+        min-height:116.69px;
+        max-height:116.69px;
+    }
+    .lasted > .list > .listitem > .item{
+        min-height:212.131px;
+        max-height:212.131px;
+    }
+     .chuxindiscount > .list > .listitem > .item > a > .img > img {
+        min-height:116.69px;
+        max-height:116.69px;
+    }
+    .chuxindiscount> .list > .listitem > .item{
+        min-height:212.131px;
+        max-height:212.131px;
+    }
+}
+@media screen and (max-width: 992px) {
+    .develop > .list > .listitem > .item >a> .img > img {
+     width:100% !important;
+        min-height:163.42px;
+        max-height:163.42px;
+    }
+    .lasted > .list > .listitem > .item >a> .img > img {
+     width:100% !important;
+        min-height:163.42px;
+        max-height:163.42px;
+    }
+   .chuxindiscount > .list > .listitem > .item >a> .img > img {
+    width:100% !important;
+       min-height:163.42px;
+        max-height:163.42px;
+    }
+}
+/*中间内容的CSS属性*/
+.date {
+    color:white;
+    background:#0068b7;
+    padding:5px;
+    box-shadow:2px 2px 2px #230404;
+    margin-right:3px;
+}
+
+/*通知公告*/
+.news-item {
+    padding: 4px 4px;
+    margin: 0px;
+    border-bottom: 1px dotted #555;
+    margin-top:3px;
+}
+.panel_row {
+    margin-left:-4px;
+    margin-right:10px;
+}
+.news-item > span {
+    line-height:25px;
+}
+.news-item >table>tbody>tr>td> img {
+    height:60px;
+    width:60px;
+}
+.panel-heading > em {
+    float:right;
+    font-weight:500;
+}
+.panel ul {
+    padding: 0px 0px 0px 0px;
+    margin: 0px;
+    list-style: none;
+
+}
+.panel-body{
+	padding:8px 0px 0px 0px !important;
+}
+.panel-footer{
+	padding:0px;
+}
+
+/*初心风云人物简介*/
+.character{
+    line-height: 25px;
+    font-size: 14px;
+    color: #6d6a6a;
+    font-family: '黑体';
+}
+.character>.news-item{
+    border:none;
+    border: 1px solid #efe4e4;
+    box-shadow: 5px 5px 5px #807c7c;
+    margin-bottom: 8px;
+
+}
+.business_card{
+    display:block;
+    list-style: none;
+    margin-left:10px !important;
+}
+
+/*列表展示*/
+.title > span {
+    background: #FF1010;
+    color: white;
+    padding: 3px;
+    border:1px dashed #FFBC00;
+}
+.container-fluid{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+hr {
+    margin-top: 0px;
+    margin-bottom: 15px;
+    border: 0;
+    border-top: 1px solid #8c8a8a;
+    box-shadow: 2px 2px 2px #cccccc;
+}
+.row{
+    margin-left:20px;
+    margin-right:20px;
+}
+.ModuleDate{
+	display:inline-block;
+	float:right;
+}
+.ModuleTitle{
+	display:inline-block;
+}
+.MainContent{
+	margin-top:0px !important;
+}
+.text-container{
+	text-align:center;
+	background-color:white;
+	margin-bottom:19px;
+}
+.title>a{
+	font-size:14px;
+}
+
+/*图片轮播*/
+@media screen and (max-width: 992px) {
+    .item>img{
+       height:auto !important;
+     }
+    .carousel .item {
+        height: auto !important;
+    }
+}
+.carousel-indicators {
+    bottom:-10px;
+}
+@media screen and (max-width:768px) {
+    .carousel-caption p{
+        padding-bottom:10px !important;
+    }
+}
+.carousel-inner>.item>a>img{
+    height:360px;
+}
+
+.carousel {
+    background-color: white;
+}
+.carousel .item {
+    background-color:#969494;
+}
+.carousel img {
+    width: 100%;
+}
+.carousel-caption {
+   right:0;
+   left:0;
+   bottom:0;  
+   background: rgba(224, 224, 224, 0.2);
+   padding-bottom:0px;
+   padding-top:0px;
+}
+ .carousel-caption p {
+    margin-bottom: 20px;
+    font-size: 18px;
+    line-height: 1.8em;
+}
+
+/*抽奖模态*/
+.modal-content{
+	background:rgba(0,0,0,0.3);
+	width:100%;
+	height: 100%;
+}
+.modal-dialog{
+	width:100%;
+	height: 100%;
+	margin:0 auto;
+	padding:0px;
+	margin-left: 0px;
+}

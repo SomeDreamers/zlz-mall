@@ -1,0 +1,82 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>@ViewBag.AdminTitle</title>
+    <meta name="keywords" content="@ViewBag.AdminKeyWords" />
+    <meta name="description" content="@ViewBag.AdminDescription" />
+    <meta name="author" content="@ViewBag.AdminAuthor" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+    <environment names="Development">
+        <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/js/bootstrap/dist/css/bootstrap.min.css" />
+        <link href="~/admin/css/login.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/js/bootstrap/dist/css/bootstrap.min.css" />
+        <link href="~/admin/css/login.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+</head>
+<body class="login">
+    <div class="logo">
+        <img src="~/img/logo/logo.png" />
+    </div>
+    <div class="content">
+        <form class="login-form" method="post">
+            <h3 class="form-title">登录</h3>
+            <div class="form-group">
+                <label class="control-label">登录：</label>
+                <input type="text" id="login_name_in" name="login_name_in" placeholder="请您输入登录信息(手机号/邮箱)" class="input-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">密码：</label>
+                <input type="password" id="user_pwd_in" name="user_pwd_in" autocomplete="off" placeholder="请您输入密码" class="input-control" />
+            </div>
+            <div class="form-actions">
+                <button type="button" id="btnLogin" class="btn btn-success">登录</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="copyright">
+        @DateTime.Now.ToString("yyyy")  &copy; by @ViewBag.Copyright
+    </div>
+    <div id="error-message"></div>
+
+    <environment names="Development">
+        <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"
+                asp-fallback-src="~/js/jquery/dist/jquery.min.js" ></script>
+        <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+                asp-fallback-src="~/js/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="http://cdn.bootcss.com/jquery-backstretch/2.0.4/jquery.backstretch.min.js"
+                asp-fallback-src="~/js/jquery-backstretch/jquery.backstretch.min.js"></script>
+        <script src="~/js/jquery.md5.js" asp-append-version="true"></script>
+        <script src="~/js/plscommon.js" asp-append-version="true"></script>
+        <script src="~/admin/js/limit/login.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"
+                asp-fallback-src="~/js/jquery/dist/jquery.min.js"></script>
+        <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+                asp-fallback-src="~/js/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="http://cdn.bootcss.com/jquery-backstretch/2.0.4/jquery.backstretch.min.js"
+                asp-fallback-src="~/js/jquery-backstretch/jquery.backstretch.min.js"></script>
+        <script src="~/js/jquery.md5.js" asp-append-version="true"></script>
+        <script src="~/js/plscommon.js" asp-append-version="true"></script>
+        <script src="~/admin/js/limit/login.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="text/javascript">
+        $(function () {
+            pls.admin.login.init();
+        })
+    </script>
+</body>
+</html>

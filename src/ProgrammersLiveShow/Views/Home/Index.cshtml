@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "初心商城-公平的源码买卖平台";
+}
+@section css
+{
+    <link href="~/front/css/index.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@*  网站说明内容  *@
+<div class="modal" id="versionupgrade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+        <div><div id="countdown"></div><button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btncloseClick">×</button></div>
+    </div>
+</div>
+
+<div class="body-content">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div id="indexCarouse" class="carousel slide">
+                <div id="carouseImage" class="carousel slide">
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <a href="javscript:void(0)">
+                                <img src="http://images.chuxinm.com/chuxinm/banner1.jpg" />
+                                <div class="carousel-caption">
+                                    <h2>不忘初心、方得始终</h2>
+                                    <p>不要忘记最初时候人的本心，就是人之初那一颗与生俱来的善良、真诚、无邪、进取、宽容、博爱之心。</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="#">
+                                <img src="http://images.chuxinm.com/chuxinm/banner2.jpg" />
+                                <div class="carousel-caption">
+                                    <h2>.net跨平台开发语言</h2>
+                                    <p>ASP.NET Core 是一个新的开源和跨平台的框架,可以在 Windows、Mac 和 Linux 上跨平台的开发和运行你的 ASP.NET Core 应用</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <ol class="carousel-indicators">
+                        <li data-target="#indexCarouse" data-slide-to="0" class="active"></li>
+                        <li data-target="#indexCarouse" data-slide-to="1"></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 商品分类+商品展示+左菜单，右商品分类  -->
+    <div class="row MainContent">
+        <div class="container-fluid">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div>
+                    <dl>
+                        <dt class="ModuleTitle">发展历程</dt>
+                        <dd class="ModuleDate"><em>@DateTime.Now.ToString("yyyy年MM日dd日")</em></dd>
+                    </dl>
+                </div>
+                <hr>
+                <div class="develop">@await Component.InvokeAsync("HomeShop", new { top = 4, type = 1 })</div>
+            </div>
+            <div>
+                @await Html.PartialAsync("_UserShow")
+                <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+                    <div class="main">
+                        <div>
+                            <dl>
+                                <dt class="ModuleTitle">最新推荐</dt>
+                                <dd class="ModuleDate"><em>@DateTime.Now.ToString("yyyy年MM日dd日")</em></dd>
+                            </dl>
+                        </div>
+                        <hr>
+                        <div class="lasted">@await Component.InvokeAsync("HomeShop", new { top = 4, type = 2 })</div>
+                        <div>
+                            <dl>
+                                <dt class="ModuleTitle">初心优惠</dt>
+                                <dd class="ModuleDate"><em>@DateTime.Now.ToString("yyyy年MM日dd日")</em></dd>
+                            </dl>
+                        </div>
+                        <hr>
+                       <div class="chuxindiscount">@await Component.InvokeAsync("HomeShop", new { top = 4, type = 3 })</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/front/js/home.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            pls.front.home.init({
+                "homeDescription": "@ViewBag.HomeDescription",
+                "homeDescriptionStatus":"@ViewBag.HomeDescriptionStatus"
+            });
+        })
+    </script>
+}

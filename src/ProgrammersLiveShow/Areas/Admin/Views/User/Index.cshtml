@@ -1,0 +1,345 @@
+﻿@{
+    Layout = null;
+}
+<div class="panel-body" style="padding:0">
+    <div class="panel panel-default">
+        <div class="panel-heading"></div>
+        <div class="panel-body">
+            <form id="formSearch" class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label" for="user_search">条件:</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="user_search" placeholder="邮箱/电话(精确)查找">
+                    </div> 
+                    <label class="control-label" for="user_gender_search">性别:</label>
+                    <div class="col-sm-1">
+                        <select class="form-control" id="user_gender_search">
+                            <option value="-1">全部</option>
+                            <option value="1">男</option>
+                            <option value="2">女</option>
+                            <option value="0">保密</option>
+                        </select>
+                    </div>
+                    <label class="control-label" for="source_type_search">来源:</label>
+                    <div class="col-sm-1">
+                        <select class="form-control" id="source_type_search">
+                            <option value="-1">全部</option>
+                            <option value="1">前端</option>
+                            <option value="2">后端</option>
+                        </select>
+                    </div>
+                    <label class="control-label" for="distable_status">状态:</label>
+                    <div class="col-sm-1">
+                        <select class="form-control" id="distable_status">
+                            <option value="-1">全部</option>
+                            <option value="0">启用</option>
+                            <option value="1">禁用</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" id="btnQueryList" class="btn btn-primary"><i class="icon-search"></i>查询</button>
+                        <button type="button" id="btnReset" class="btn btn-primary"><i class="icon-remove"></i>清空</button>
+                    </div>
+                </div>
+            </form>
+            <hr />
+            <div>
+                <table id="userinfo"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ButtionInfo")
+
+@*添加编辑浮层*@
+<div class="modal fade" id="AddEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title" id="HeadTitle">用户信息添加</h4>
+            </div>
+            <div class="modal-body">
+                <form id="userOperation" method="post" class="form-horizontal">
+                    <input type="hidden" id="user_id" name="user_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">用户名:</span>
+                            <input type="text" id="user_name" name="user_name" placeholder="请您输入用户名" maxlength="20" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">真实名称:</span>
+                            <input type="text" id="full_name" name="full_name" placeholder="请您输入您的真实名称" maxlength="20" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">邮箱:</span>
+                            <input type="text" id="user_email" name="user_email" placeholder="请您输入邮箱" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">电话:</span>
+                            <input type="text" id="user_phone" name="user_phone" placeholder="请输入电话" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">密码:</span>
+                            <input type="text" id="user_pwd" name="user_pwd" placeholder="请您输入密码" maxlength="20" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" style="padding-left:10px;">性别:</span>
+                            <input type="radio" name="user_gender" value="1" style="margin-left: 100px;" />男
+                            <input type="radio" name="user_gender" value="2" style="margin-left: 100px;" />女
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">设置部门:</span>
+                            <select id="departmnet_name" class="selectpicker show-tick form-control" multiple data-live-search="true"></select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnAddData"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*设置角色*@
+<div class="modal fade" id="SetRoleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">用户：(<span id="Role_Head_Title">***</span>)配置角色</h4>
+            </div>
+            <div class="modal-body">
+                <form id="user_role_Operation" method="post" class="form-horizontal">
+                    <input type="hidden" id="role_user_id" name="role_user_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">设置角色:</span>
+                            <select id="role_name" class="selectpicker show-tick form-control" multiple data-live-search="true"></select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnSetRoleData"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*设置临时权限*@
+<div class="modal fade" id="SetActionModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">用户：(<span id="Action_Head_Title">***</span>)配置临时权限</h4>
+            </div>
+            <div class="modal-body">
+                <form id="user_action_Operation" method="post" class="form-horizontal">
+                    <input type="hidden" id="action_user_id" name="action_user_id" />
+                    <input type="hidden" id="action_id" name="action_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">设置临时权限:</span>
+                            <div><ul id="tree_user_action" class="ztree"></ul></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnSetActionData"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*删除模型*@
+<div class="modal fade" id="DeleteEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">用户：(<span id="Delete_Head_Title">***</span>)删除确认页面</h4>
+            </div>
+            <div class="modal-body">
+                <form id="user_Delete" method="post" class="form-horizontal">
+                    <input type="hidden" id="delete_user_id" name="delete_user_id" />
+                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            您确认要删除用户<span id="Delete_Head_Title_OK">***</span>吗？
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnDeleteUser"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*激活模型*@
+<div class="modal fade" id="ActivateEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">用户：(<span id="Activate_Head_Title">***</span>)激活确认页面</h4>
+            </div>
+            <div class="modal-body">
+                <form id="user_Activate" method="post" class="form-horizontal">
+                    <input type="hidden" id="activate_user_id" name="activate_user_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            您确认要激活用户<span id="Activate_Head_Title_OK">***</span>吗？激活之后用户可登录前台信息并且无法取消
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnActivateUser"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 详情浮层 *@
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">用户信息详情</h4>
+            </div>
+            <div class="modal-body">
+                <form id="userDetail" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">人员Id:</span>
+                            <input type="text" id="detail_user_id" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">                            
+                            <span class="input-group-addon">用户名:</span>
+                            <input type="text" id="detail_user_name" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">编号:</span>
+                            <input type="text" id="detail_user_code" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">邮箱:</span>
+                            <input type="text" id="detail_user_email" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">电话:</span>
+                            <input type="text" id="detail_user_phone" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">创建时间</span>
+                            <input type="text" id="detail_user_createtime" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">最后登录时间</span>
+                            <input type="text" id="detail_last_time" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">性别:</span>
+                            <input type="text" id="detail_user_gender" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">来源:</span>
+                            <input type="text" id="detail_source_type" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">邮件激活:</span>
+                            <input type="text" id="detail_user_activation" readonly="readonly" class="form-control" />
+                            <span class="input-group-addon">入驻：</span>
+                            <input type="text" id="detail_user_visit" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">IP:</span>
+                            <input type="text" id="detail_user_ip" readonly="readonly" class="form-control" />                           
+                            <span class="input-group-addon">是否禁用：</span>
+                            <input type="text" id="detail_user_disable" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">禁用原因:</span>
+                            <textarea rows="3" id="detail_user_disabledesc" readonly="readonly" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">所属部门</span>
+                            <textarea rows="3" id="detail_user_department" readonly="readonly" class="form-control"></textarea>
+                            <span class="input-group-addon">所属角色</span>
+                            <textarea rows="3" id="detail_user_role" readonly="readonly" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 启用禁用模型 *@
+<div class="modal fade" id="DisableEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title"><span id="disableName">***</span>：数据禁用启用管理</h4>
+            </div>
+            <div class="modal-body">
+                <form id="disableOperation" method="post" class="form-horizontal">
+                    <p>友情提示：禁用启用状态都会有数据记录</p>
+                    <input type="hidden" id="id" name="id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">描述:</span>
+                            <textarea rows="3" id="disable_desc" name="disable_desc" placeholder="请输入部门描述" maxlength="200" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnDisable"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/admin/js/limit/user.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    $(function () {
+        pls.admin.user.init();
+    })
+</script>

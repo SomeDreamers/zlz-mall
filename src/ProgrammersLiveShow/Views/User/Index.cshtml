@@ -1,0 +1,132 @@
+﻿@model Pls.Entity.UserEntity
+@{
+    ViewBag.Title = "个人中心-个人信息修改";
+}
+@section css
+{
+    <link href="~/front/css/personalcenter.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="personcenter">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-left:15px;">
+        @await Html.PartialAsync("_PersonalRight")
+
+        <div class="rightcontent col-xs-12 col-sm-8 col-md-8 col-lg-10">
+            <div id="personContent">
+                <div id="mysettings" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 basicinfoarea">
+                        <ul id="mybasicinfo" class="nav nav-tabs">
+                            <li class="active"><a href="#essential" data-toggle="tab">基本信息</a></li>
+                            <li><a href="#avatarphoto" data-toggle="tab">头像照片</a></li>
+                            <li><a href="#moreinfo" data-toggle="tab">申请查看后台</a></li>
+                        </ul>
+                        <div style="clear:both;"></div>
+
+                        <div id="mybasicinfo" class="tab-content">
+                            <div class="tab-pane fade in active" id="essential">
+                                <form id="formUpdate" class="form-horizontal">
+                                    <ul class="personbasic">
+                                        <li>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">昵称<span class="necessary">(*)</span></span>
+                                                    <input type="text" name="user_name" id="user_name" class="form-control" maxlength="10" value="@Model.user_name" />
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">真实姓名</span>
+                                                    <input type="text" name="full_name" id="full_name" class="form-control" maxlength="6" value="@Model.full_name" />
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">电话</span>
+                                                    <input type="text" name="user_phone" id="user_phone" runat="server" class="form-control" value="@Model.user_phone" />
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">性别</span>
+                                                    <input type="radio" name="user_gender" value="1" checked="@(Model.user_gender==1?true:false)" style="margin-left: 24px;">男
+                                                    <input type="radio" name="user_gender" value="2" checked="@(Model.user_gender==2?true:false)" style="margin-left: 24px;">女
+                                                    <input type="radio" name="user_gender" value="0" checked="@(Model.user_gender==0?true:false)" style="margin-left: 24px;">保密
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </form>
+                                <p id="user_errinfo" class="showerror" style="display:none"></p>
+                                <button class="btn btn-primary sub btn_personal_submit" type="submit" id="btnUpdateUser">提交</button>
+                            </div>
+
+                            <div class="tab-pane fade" id="avatarphoto">
+                                <div class="uploadarea">
+                                    <ul class="uploadpic">
+                                        <li>
+                                            <a href="javascript:;" class="file">
+                                                <input type="file" id="uploadImage" name="uploadImage" class="btnupload" />
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <p>仅支持JPG、GIF、PNG、JPEG、BMP格式，文件小于1M</p>
+                                    <img src="@Model.user_image" class="img-responsive img-rounded">
+                                    <p id="user_image_errinfo" class="showerror" style="display:none"></p>
+                                </div>
+                                <button class="btn btn-primary btn_personal_submit" id="btnUserUploadImage">保存</button>
+                            </div>
+
+                            <div class="tab-pane fade" id="moreinfo">
+                                @{
+                                    var data = ViewBag.UserApply;
+                                    if (data == null)
+                                    {
+
+                                        <div class="apply in">
+                                            <div class="applycontent">
+                                                <span>申请理由</span>
+                                                <textarea placeholder="请输入您的申请理由(*^_^*)，最多只能输入50字" id="apply_reason" maxlength="100"></textarea>
+                                            </div>
+                                            <div class="clr"></div>
+                                            <p id="user_appaly_errinfo" class="showerror" style="display:none"></p>
+                                            <button class="btn btn-primary btn_personal_submit" id="btnApplyUser">保存</button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="apply in">
+                                            <div style="margin-top:15px;">
+                                                <p>是否同意：@(data.is_true?"已同意":"不同意或者未处理")</p>
+                                                <p>申请理由：@data.apply_reason</p>
+                                                <p>处理意见：@(string.IsNullOrEmpty(data.apply_desc)?"暂未回复": data.apply_desc)</p>
+                                                <p>申请时间：@data.createtime.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                                            </div>
+                                            <div class="clr"></div>
+                                        </div>
+                                        <div class="clr"></div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/front/js/user.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            pls.front.user.init();
+        })
+    </script>
+}

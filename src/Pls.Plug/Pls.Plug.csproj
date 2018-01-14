@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.4.0" />
+    <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="1.1.0-rtm-10026" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pls.Service\Pls.Service.csproj" />
+  </ItemGroup>
+
+</Project>

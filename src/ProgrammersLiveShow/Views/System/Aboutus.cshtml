@@ -1,0 +1,164 @@
+﻿@model IQueryable<Pls.Entity.UserEntity>
+@{
+    ViewBag.Title = "团队简介";
+}
+@section css
+{
+    <link href="~/front/css/aboutus.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/front/css/effect.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="ih-item square colored effect4">
+            <a href="javascript:void(0)"> 
+                <div class="img"><img src="http://images.chuxinm.com/chuxinm/team.jpg" /></div>
+                <div class="mask1"></div><div class="mask2"></div>
+            </a>
+        </div>
+        <div class="carousel-caption"><h2>团队风采</h2></div>
+    </div>
+</div>
+
+<div class="partnerintro">
+    @{
+        foreach (var item in Model)
+        {
+            var image = string.IsNullOrEmpty(item.user_image) ? "../img/default.jpg" : item.user_image;
+            <div class="ih-item circle colored effect1">
+                <a href="javascript:void(0)">
+                    <div class="spinner"></div>
+                    <div class="img"><img src="@image" /></div>
+                    <div class="info">
+                        <div class="info-back">
+                            <h3>@(string.IsNullOrEmpty(item.full_name) ? "暂未设置" : item.full_name)</h3>
+                            <p>@item.user_name (@item.user_code)</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            }
+        }
+    <div style="clear:both;"></div>
+</div>
+<div style="clear:both;"></div>
+
+<div id="showcompeate" class="aboutdetail col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <h3>团队文化</h3>
+    <div style="float: left;">
+        <p>①：人因梦想而伟大，人因行动而成功。</p>
+        <p>②：把简单的事情办好就不简单，把平凡的工作干好就不平凡。</p>
+        <p>③：共同的努力,共同的梦想.</p>
+        <p>④：和一群志同道合的朋友干一件很普通的事情是一件非常荣幸的事情。</p>
+    </div>
+</div>
+<div style="clear:both;"></div>
+
+<div class="aboutdetail col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="aboutdetail col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="brand">
+            <i class="glyphicon"><img src="http://images.chuxinm.com/chuxinm/heart.png" class="img-rounded img-responsive" /></i>
+            <div class="desc">
+                <h3>勿忘初心</h3><p>有一种坚持叫做不忘初心，方得始终</p>
+            </div>
+        </div>
+    </div>
+    <div class="aboutdetail col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="brand">
+            <i class="glyphicon"><img src="http://images.chuxinm.com/chuxinm/water.png" class="img-rounded img-responsive" /></i>
+            <div class="desc">
+                <h3>滴水石穿</h3><p>有一种坚持叫做滴水石穿、绳锯木断</p>
+            </div>
+        </div>
+    </div>
+    <div class="aboutdetail col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="brand">
+            <i class="glyphicon">
+                <img src="http://images.chuxinm.com/chuxinm/ysjj.png" class="img-rounded img-responsive" />
+            </i>
+            <div class="desc">
+                <h3>与时俱进</h3>
+                <p>有一种情怀叫做与时俱进、革故鼎新</p>
+            </div>
+        </div>
+    </div>
+    <div class="aboutdetail col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="brand">
+            <i class="glyphicon">
+                <img src="http://images.chuxinm.com/chuxinm/tzgj.png" class="img-rounded img-responsive" />
+            </i>
+            <div class="desc">
+                <h3>同舟共济</h3>
+                <p>有一种互助叫做同舟共济、众志成城</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="clear:both;"></div>
+
+<div class="aboutdetail col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <h3>关于我们</h3>
+    @foreach (var item in Model)
+    {
+        <div class="aboutdetail col-xs-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="brand">
+                <i class="glyphicon"><img src="http://images.chuxinm.com/chuxinm/blog_person.png" class="img-rounded img-responsive" /></i>
+                <div class="desc">
+                    @{ 
+                        var full_name = string.IsNullOrEmpty(item.full_name) ? "未设置" : item.full_name;
+                    }
+                    @if (item.user_code == "#8616")
+                    {
+                        <h3>@full_name</h3>
+                        <p>座右铭：苦心人、天不负、卧薪尝胆，三千越甲可吞吴</p>
+                        <p><a href="http://www.cnblogs.com/hanyinglong" target="_blank">他的博客</a>/<a href="https://github.com/kencery/Common/tree/master/resule" target="_blank">他的简历</a></p>
+                    }
+                    else if (item.user_code == "#7588")
+                    {
+                        <h3>@full_name</h3>
+                        <p>座右铭：有智者立长志，无志者长立志。</p>
+                        <p><a href="http://www.cnblogs.com/bobo-pcb/" target="_blank">他的博客</a></p>
+                    }
+                    else if (item.user_code == "#4345")
+                    {
+                        <h3>@full_name</h3>
+                        <p>座右铭：接受失败，但不选择放弃</p>
+                    }
+                    else if (item.user_code == "#4084")
+                    {
+                        <h3>@full_name</h3>
+                        <p>座右铭：吾生也有涯，而知也无涯 。以有涯随无涯，殆已！</p>
+                        <p><a href="http://www.cnblogs.com/chucklu" target="_blank">他的博客</a></p>
+                    }
+                    else if (item.user_code == "#8225")
+                    {
+                        <h3>@full_name</h3>
+                        <p>座右铭：平凡的脚步也可以走完伟大的行程</p>
+                        <p><a href="http://www.cnblogs.com/ypcute" target="_blank">她的博客</a></p>
+                    }        
+                </div>
+            </div>
+        </div>
+        }
+     <div class="aboutdetail col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="brand">
+            <i class="glyphicon"><img src="http://images.chuxinm.com/chuxinm/blog_person.png" class="img-rounded img-responsive" /></i>
+            <div class="desc">
+                <h3>赵铭哲</h3>
+                <p>座右铭：坚持不懈，直到成功</p>
+                <p><a href="http://www.cnblogs.com/zhao365845726/" target="_blank">他的博客</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="aboutdetail col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="brand">
+            <i class="glyphicon"><img src="http://images.chuxinm.com/chuxinm/blog_person.png" class="img-rounded img-responsive" /></i>
+            <div class="desc">
+                <h3>杨朋飞</h3>
+                <p>座右铭：故天将降大任于斯人也，必先苦其心志，劳其筋骨，饿其体肤，空乏其身，行拂乱其所为，所以动心忍性，增益其所不能</p>
+                <p><a href="http://www.cnblogs.com/ypfnet/" target="_blank">他的博客</a>/<a href="http://www.jianshu.com/u/40fb2e2a8047" target="_blank">他的简书</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="clear:both"></div>

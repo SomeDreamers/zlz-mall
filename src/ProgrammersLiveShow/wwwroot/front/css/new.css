@@ -1,0 +1,61 @@
+/*==============new===============*/
+.ih-item.square.effect4 .ih-item.square.effect4 .mask2{
+    height:609px !important;
+    
+}
+.ih-item.square.effect4 .mask1, .ih-item.square.effect4 .mask2 {
+    position: absolute;
+    background: #333333;
+    background: rgba(0, 0, 0, 0.6);
+    height: 610px !important;
+    width: 618px !important;
+    }
+   
+    .publish {
+    border: 1px solid #ccc;
+    border-right: 0px;
+    line-height: 35px;
+    text-align: center;
+    position: relative;
+    left: 20px;
+    background: #0068B7;
+    border: 50%;
+    color: white;
+    border-radius:21px 5px 5px 21px;
+    transform: rotate(0deg);
+    z-index: 1900;
+}
+@media screen and (max-width:992px)  {
+    .glyphicon-pushpin {
+      left:32px !important;
+    }
+}
+@media screen and (max-width:768px)  {
+    .glyphicon-pushpin {
+      left:32px !important;
+    }
+}
+@media screen and (min-width:992px)  {
+    .glyphicon-pushpin {
+      left:63px !important;
+    }
+}
+.glyphicon-pushpin{
+    margin-right: 10px;
+    position: relative;
+    left: 76px;
+    transform: rotate(339deg);
+    font-size: 25px;
+    z-index: 2000;
+    color: #FFC627;
+    top: -9px;
+}
+.effect4{
+    width:100%;
+}
+.item{
+    float:left;width:100%;text-align:left;
+}
+.content{
+    text-align:left;float:left;font-size:16px;padding:10px;border:1px solid #ccc;line-height:25px;text-indent:2.0em;padding-left:20px;
+}

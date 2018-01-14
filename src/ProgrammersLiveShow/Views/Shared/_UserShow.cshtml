@@ -1,0 +1,64 @@
+﻿@model IQueryable<Pls.Entity.UserEntity>
+
+<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 left">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-list-alt"></span><b>团队人物简介</b>
+        </div>
+        <div class="panel-body">
+            <div class="panel_row">
+                <div class="col-xs-12">
+                    <ul class="character">
+                        @{
+                            foreach (var item in Model)
+                            {
+                                var image = string.IsNullOrEmpty(item.user_image) ? "../img/default.jpg" : item.user_image;
+                                <li class="news-item">
+                                    <table cellpadding="4">
+                                        <tr>
+                                            <td><img src="@image" width="60" class="img-circle" /></td>
+                                            <td>
+                                                <ul class="business_card">
+                                                    @if (item.user_code == "#8616")
+                                                    {
+                                                        <li>姓名:@item.full_name</li>
+                                                        <li>Level:后端攻城狮</li>
+                                                        <li><a href="http://www.cnblogs.com/hanyinglong" target="_blank">他的博客</a></li>
+                                                    }
+                                                    else if (item.user_code == "#7588")
+                                                    {
+                                                        <li>姓名:@item.full_name</li>
+                                                        <li>Level:后端攻城狮</li>
+                                                        <li><a href="http://www.cnblogs.com/bobo-pcb/" target="_blank">他的博客</a></li>
+                                                    }
+                                                    else if (item.user_code == "#4345")
+                                                    {
+                                                        <li>姓名:@item.full_name</li>
+                                                        <li>Level:后端攻城狮</li>
+                                                    }
+                                                    else if (item.user_code == "#4084")
+                                                    {
+                                                        <li>姓名:@item.full_name</li>
+                                                        <li>Level:测试攻城狮</li>
+                                                        <li><a href="http://www.cnblogs.com/chucklu" target="_blank">他的博客</a></li>
+                                                    }
+                                                    else if (item.user_code == "#8225")
+                                                    {
+                                                        <li>姓名:@item.full_name</li>
+                                                        <li>Level:前端攻城狮</li>
+                                                        <li><a href="http://www.cnblogs.com/ypcute" target="_blank">她的博客</a></li>
+                                                    }
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer"></div>
+    </div>
+</div>

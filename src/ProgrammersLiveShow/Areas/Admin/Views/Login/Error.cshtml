@@ -1,0 +1,74 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.AdminTitle</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <style type="text/css">
+        body {
+            font-family: 'Metal Mania', cursive;
+            background: skyblue;
+        }
+        .wrap {
+            margin: 0 auto;
+            width: 1000px;
+        }
+        .logo h1 {
+            font-size: 200px;
+            color: yellow;
+            text-align: center;
+            margin-bottom: 1px;
+            text-shadow: 1px 1px 6px #555;
+        }
+        .logo p {
+            color: white;
+            font-size: 20px;
+            margin-top: 1px;
+            text-align: center;
+        }
+        .logo p span {
+            color: lightgreen;
+        }
+        .sub a {
+            color: yellow;
+            background: #06afd8;
+            text-decoration: none;
+            padding: 5px;
+            font-size: 13px;
+            font-family: arial, serif;
+            font-weight: bold;
+        }
+        .footer {
+            color: white;
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+        }
+        .footer a {
+            color: yellow;
+        }
+    </style>
+
+</head>
+<body class="login">
+    <div class="wrap">
+        <div class="logo">
+            <h1>出错了</h1>
+            <p>错误原因 - 页面未找到/无权限/破解</p>
+            <div class="sub">
+                <p><a href="#">返回登录页面</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        @DateTime.Now.ToString("yyyy")  &copy; by @ViewBag.Copyright
+    </div>
+</body>
+</html>

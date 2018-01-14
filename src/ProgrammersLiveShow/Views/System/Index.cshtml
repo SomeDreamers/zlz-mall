@@ -1,0 +1,75 @@
+﻿@model IQueryable<Pls.Entity.MessageShowInfo>
+@{
+    ViewBag.Title = "系统反馈";
+}
+@section css
+{
+    <link href="~/front/css/listening.css" rel="stylesheet"  asp-append-version="true" />
+    <link href="~/front/css/effect.css" rel="stylesheet" asp-append-version="true" />
+}
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="ih-item square colored effect4" style="width:100%;">
+            <a href="javascript:void(0)">
+                <div class="img" style="line-height:300px;"><img src="http://images.chuxinm.com/chuxinm/listen.jpg" alt="img"></div>
+                <div class="mask1"></div><div class="mask2"></div>
+            </a>
+        </div>
+        <div class="carousel-caption" style="background: transparent;"><h2>CHUXINM 初心系统建议留言版</h2></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="left-listen col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <textarea placeholder="请输入您对系统的建议（字数限制为10-200字）" maxlength="200" id="message_desc"></textarea>
+            <p id="message_error" style="float:left;display:none" class="showerror"></p>
+            <button class="btn btn-primary btn-leavemess" id="btnAddMessage">提交留言</button>
+        </div>
+        <div id="content" class="left-listen col-xs-12 col-sm-12 col-md-9 col-lg-9">
+            @foreach (var item in Model)
+            {
+                <div class="item">
+                    <p class="col-xs-12 col-sm-12 col-md-12 col-lg-12">@item.message_desc</p>
+                    <div class="clr"></div>
+                    <div class="toolbar col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <ul>
+                            <li>
+                                <i><img src="@(string.IsNullOrEmpty(item.user_image) ? "/img/default.jpg" : item.user_image)" class="img img-circle" style=""></i>
+                                @(string.IsNullOrEmpty(item.user_name) ? "好心人" : item.user_name)
+                            </li>
+                            <li>
+                                <i class="glyphicon glyphicon-dashboard"></i>@item.createtime.ToString("yyyy-MM-dd HH:mm:ss")
+                            </li>
+                            @(item.message_read==1? Html.Raw("<li><i class='glyphicon glyphicon-remove'></i>未阅读</li>"): Html.Raw("<li><i class='glyphicon glyphicon-ok'></i>已阅读</li>"))
+                            @(item.message_solve == 1 ? Html.Raw("<li><i class='glyphicon glyphicon-remove'></i>未处理</li>") : Html.Raw("<li><i class='glyphicon glyphicon-ok'></i>已处理</li>"))
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @*<ul class="pagination">
+            <li><a href="#">&laquo;</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">6</a></li>
+            <li><a href="#">7</a></li>
+            <li><a href="#">8</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>*@
+    </div>
+</div>
+<div style="clear:both;"></div>
+@section scripts
+{
+    <script src="~/front/js/message.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            pls.front.message.init();
+        })
+    </script>
+}

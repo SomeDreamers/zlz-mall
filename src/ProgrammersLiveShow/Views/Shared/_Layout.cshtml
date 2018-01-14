@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewBag.Title</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="keywords" content="@ViewBag.AdminKeyWords" />
+        <meta name="description" content="@ViewBag.AdminDescription" />
+        <meta name="author" content="@ViewBag.AdminAuthor" />
+        <meta baidu-gxt-verify-token="78803aee43cf8eda5f6d6e6ddce76a77">
+        <meta name="baidu-site-verification" content="PO4BdPxATy" />
+        <environment names="Development">
+            <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" asp-fallback-href="~/js/bootstrap/dist/css/bootstrap.min.css" />
+            <link href="~/front/css/layout.css" rel="stylesheet" asp-append-version="true" />
+            @RenderSection("css", required: false)
+        </environment>
+        <environment names="Staging,Production">
+            <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" asp-fallback-href="~/js/bootstrap/dist/css/bootstrap.min.css" />
+            <link href="~/front/css/layout.css" rel="stylesheet" asp-append-version="true" />
+            @RenderSection("css", required: false)
+        </environment>
+    </head>
+    <body>
+        <!-- 顶部导航 -->
+        <div class="container">
+            <div class="navbar navbar-inverse top">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="navbar-collapse collapse navbar-collapse_top">
+                        <ul class="nav navbar-nav top">
+                            <li><a asp-controller="Home" asp-action="Index">初心商城</a></li>
+                            <li><a asp-controller="System" asp-action="Index" target="_blank">系统反馈</a></li>  
+                            <li><a asp-area="Admin" asp-controller="Login" asp-action="Index" target="_blank">登录后台</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav top right" >
+                            @if (string.IsNullOrEmpty(ViewBag.FrontUserName))
+                            {
+                                <li><a asp-controller="Login" asp-action="Index" asp-route-type="0">亲,请登录</a></li>
+                                <li><a asp-controller="Login" asp-action="Index" asp-route-type="1">注册</a></li>
+                            }
+                            else
+                            {
+                                <li class="login_front_pic">
+                                    <a asp-controller="Personal" asp-action="Index"><img src="@ViewBag.UserImage" class="img-circle img-responsive" /></a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Personal" asp-action="Index" id="login_front_name">@ViewBag.FrontUserName</a>
+                                </li>
+                                <li><a asp-controller="Personal" asp-action="Index">我的订单</a></li>
+                                <li><a asp-controller="Login" asp-action="Layout">退出</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- logo+导航+搜索栏+内容详情页 -->
+        <div class="logo_search_content">    
+            <div class="navbar navbar-inverse">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div>
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <div class="logo">
+                            <a asp-controller="Home" asp-action="Index"><img src="~/img/logo/logo.png" /></a>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-primary">
+                                <li><a asp-controller="Home" asp-action="Index">首页</a></li>
+                                <li><a asp-controller="Home" asp-action="Cart">购物车</a></li>
+                                <li><a asp-controller="Personal" asp-action="Index">个人中心</a></li>
+                                <li><a asp-controller="System" asp-action="News">公告</a></li>
+                                <li><a asp-controller="System" asp-action="Aboutus">关于我们</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 navbar-search">
+                            @*<i></i><span class="glyphicon glyphicon-search form-control-feedback-search"></span>
+                                <input type="text" class="form-control" placeholder="请输入关键字搜索：暂未实现" />*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- 内容显示 -->
+        <div class="system_content">
+            @RenderBody()
+        </div>
+        <div class="clr"></div>
+
+        <!-- 底部导航和版权信息 -->
+        <div class="navbar navbar-inverse navbar-bottom">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse_bottom">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse_bottom collapse_bottom">
+                <ul class="nav navbar-nav" style="margin-top: -4px;">
+                    <li><a asp-controller="Home" asp-action="Index">首页</a></li>
+                    <li><a asp-controller="System" asp-action="Aboutus">关于我们</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-font-control">
+            <footer>
+                <div class="footer-links clearfix">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+                            <dl class="col-links col-links-first">
+                                <dt>帮助中心</dt>
+                                <dd>账户管理</dd>
+                                <dd>购物指南</dd>
+                                <dd>订单操作</dd>
+                            </dl>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+                            <dl class="col-links ">
+                                <dt>服务支持</dt>
+                                <dd>售后政策</dd>
+                                <dd>自助服务</dd>
+                                <dd>相关下载</dd>
+                            </dl>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+                            <dl class="col-links ">
+                                <dt>关于初心</dt>
+                                <dd>了解初心</dd>
+                                <dd>加入初心</dd>
+                                <dd>联系我们</dd>
+                            </dl>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+                            <dl class="col-links ">
+                                <dt>关注我们</dt>
+                                <dd>新浪微博</dd>
+                                <dd>初心部落</dd>
+                                <dd>官方微信</dd>
+                            </dl>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+                            <img src="~/img/logo/chuxin_wechat.jpg" alt="初心微信公众号" width="107" height="106" /><p>加入微信公众号</p>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+                            <img src="~/img/logo/chuxin_qq.png" alt="初心QQ群" width="107" height="106" /><p>加入QQ群</p>
+                        </div>
+                    </div>
+                </div>
+                <p>@ViewBag.Copyright <a href="http://www.miitbeian.gov.cn/" target="_blank">京ICP备16055626号</a></p>
+            </footer>
+        </div>
+
+        <!--错误弹层提示信息 -->
+        <div id="error-message"></div>
+        <environment names="Development">
+            <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js" asp-fallback-src="~/js/jquery/dist/jquery.min.js"></script>
+            <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" asp-fallback-src="~/js/bootstrap/dist/js/bootstrap.min.js"></script>
+            <script src="~/js/jquery.md5.js" asp-append-version="true"></script>
+            <script src="~/js/plscommon.js" asp-append-version="true"></script>
+            <script src="http://static.tctip.com/js/tctip.min.js"></script>
+            @RenderSection("scripts", required: false)
+        </environment>
+        <environment names="Staging,Production">
+            <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js" asp-fallback-src="~/js/jquery/dist/jquery.min.js"></script>
+            <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" asp-fallback-src="~/js/bootstrap/dist/js/bootstrap.min.js"></script>
+            <script src="~/js/jquery.md5.js" asp-append-version="true"></script>
+            <script src="~/js/plscommon.js" asp-append-version="true"></script>      
+            @RenderSection("scripts", required: false)
+        </environment>
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?41a0dffd49512fcd8a25170051327af7";
+              var s = document.getElementsByTagName("script")[0];
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+        <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"7","bdPos":"right","bdTop":"126.5"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+    </body>
+</html>

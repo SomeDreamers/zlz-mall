@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "订单支付成功";
+}
+@section css
+{
+    <link href="~/front/css/paysuccess.css" rel="stylesheet" asp-append-version="true" />
+}
+<div class="ok">
+    <div class="sucessinfo col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <i class="glyphicon glyphicon-ok-sign">恭喜您，支付已提交!</i>
+        <div class="orderinfo">
+            <span>订单号：</span><em>@ViewBag.order_number</em><span><span>付款金额：</span><em class="payamount">￥@ViewBag.money</em></span>
+        </div>
+        <ul class="back">
+            <li><a asp-controller="Home" asp-action="Index">首页</a></li>
+            <li><a asp-controller="Personal" asp-action="Index">个人中心</a></li>
+            <li><a href="/Personal/OrderDetail?order_id=@ViewBag.order_id">订单详情</a></li>
+        </ul>
+        <div class="other">请等待管理员处理,管理员12小时之内处理你的订单，请注意查收邮件</div>
+        <div class="other">安全提醒：下单后，用QQ给您发送链接办理退款的都是骗子！初心商城不存在系统升级，订单异常等问题，谨防假冒客服电话诈骗！安心购物，安全无忧。</div>
+    </div>
+</div>
+<div style="clear:both;"></div>

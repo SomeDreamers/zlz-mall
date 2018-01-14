@@ -1,0 +1,200 @@
+﻿@{
+    Layout = null;
+}
+<div class="panel-body" style="padding:0">
+    <div class="panel panel-default">
+        <div class="panel-heading"></div>
+        <div class="panel-body">
+            <form id="formSearch" class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-1" for="role_name_search">名称：</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="role_name_search">
+                    </div>
+
+                    <label class="control-label col-sm-1" for="distable_status">状态：</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" id="distable_status">
+                            <option value="-1">全部</option>
+                            <option value="1">禁用</option>
+                            <option value="0">不禁用</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" id="btnQueryList" class="btn btn-primary"><i class="icon-search"></i>查询</button>
+                        <button type="button" id="btnReset" class="btn btn-primary"><i class="icon-remove"></i>清空</button>
+                    </div>
+                </div>
+            </form>
+            <hr />
+            <div>
+                <table id="roleinfo"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("ButtionInfo")
+
+@*添加编辑浮层*@
+<div class="modal fade" id="AddEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title" id="HeadTitle">角色信息添加</h4>
+            </div>
+            <div class="modal-body">
+                <form id="roleOperation" method="post" class="form-horizontal">
+                    <input type="hidden" id="role_id" name="role_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">角色名称:</span>
+                            <input type="text" id="role_name" name="role_name" placeholder="请输入角色名称" maxlength="20" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">角色类型:</span>
+                            <select id="role_type" class="selectpicker show-tick form-control" data-live-search="true" >
+                                <option value="1">前端</option>
+                                <option value="2" selected="selected">后端</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">角色描述:</span>
+                            <textarea rows="3" id="role_desc" name="role_desc" placeholder="请输入角色描述" maxlength="200" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnAddData"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*详情浮层*@
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">角色信息详情</h4>
+            </div>
+            <div class="modal-body">
+                <form id="roleDetail" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">角色Id:</span>
+                            <input type="text" id="detail_role_id" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">角色名称:</span>
+                            <input type="text" id="detail_role_name" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">角色类型:</span>
+                            <input type="text" id="detail_role_type" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">角色描述:</span>
+                            <textarea rows="3" id="detail_role_desc" readonly="readonly" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">创建时间</span>
+                            <input type="text" id="detail_role_createtime" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">是否禁用：</span>
+                            <input type="text" id="detail_role_disable" readonly="readonly" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">禁用原因:</span>
+                            <textarea rows="4" id="detail_role_disabledesc" readonly="readonly" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*设置权限*@
+<div class="modal fade" id="SetActionModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title">用户：(<span id="Action_Head_Title">***</span>)配置临时权限</h4>
+            </div>
+            <div class="modal-body">
+                <form id="role_action_Operation" method="post" class="form-horizontal">
+                    <input type="hidden" id="action_role_id" name="action_role_id" />
+                    <input type="hidden" id="action_id" name="action_id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">设置临时权限:</span>
+                            <div><ul id="tree_role_action" class="ztree"></ul></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnSetActionData"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 启用禁用模型 *@
+<div class="modal fade" id="DisableEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                <h4 class="modal-title"><span id="disableName">***</span>：数据禁用启用管理</h4>
+            </div>
+            <div class="modal-body">
+                <form id="disableOperation" method="post" class="form-horizontal">
+                    <p>友情提示：禁用启用状态都会有数据记录</p>
+                    <input type="hidden" id="id" name="id" />
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">描述:</span>
+                            <textarea rows="3" id="disable_desc" name="disable_desc" placeholder="请输入角色描述" maxlength="200" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                <button type="button" class="btn btn-primary" id="btnDisable"><i class="icon-ok"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/admin/js/limit/role.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    $(function () {
+        pls.admin.role.init();
+    })
+</script>

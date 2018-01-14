@@ -1,0 +1,155 @@
+﻿<div class="page-header-inner">
+    <div class="page-logo">
+        <a asp-area="Admin" asp-controller="Home" asp-action="Index">
+            <img src="~/img/logo/logo.png" style="height:46px;width:144px;" />
+        </a>
+    </div>
+    <a href="javascript:void(0);" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"></a>
+
+    <div class="top-menu">
+        <ul class="nav navbar-nav pull-right">
+            <!-- 消息列表，从数据中读取显示 -->
+            <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    <i class="icon-bell"></i><span class="badge badge-default" id="user_total">*</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="external">
+                        <h3><span class="bold">当天总共注册<span id="user_total1">*</span>个用户</span></h3>
+                        <a href="javascript:void(0)" id="btnUserTotal" >查看全部</a>
+                    </li>
+                    <li>
+                        <ul class="dropdown-menu-list scroller" style="height: 250px;" 
+                            data-handle-color="#637283" id="userMessgaeUL">
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            
+            @*留言表列表，从数据库中读取*@
+            <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar" style="display:none">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    <i class="icon-fire"></i><span class="badge badge-default">3</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="external">
+                        <h3>您有<span class="bold">4</span>新的邮件</h3>
+                        <a href="page_inbox.html">查看全部</a>
+                    </li>
+                    <li>
+                        <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+                            <li>
+                                <a href="inbox.html?a=view">
+                                    <span class="photo"><img src="~/img/default.jpg" class="img-circle" alt=""></span>
+                                    <span class="subject">
+                                        <span class="from">陈缘萍</span><span class="time">16 mins </span>
+                                    </span>
+                                    <span class="message">您的邮件为什么不发送。。。。。。。</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- 收件箱列表，从数据库中读取,暂未实现 -->
+            <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar"  style="display:none">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    <i class="icon-envelope"></i><span class="badge badge-default">4</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="external">
+                        <h3>您有<span class="bold">8</span>新的邮件</h3>
+                        <a href="page_inbox.html">查看全部</a>
+                    </li>
+                    <li>
+                        <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+                            <li>
+                                <a href="inbox.html?a=view">
+                                    <span class="photo">
+                                        <img src="~/img/default.jpg" class="img-circle" alt="">
+                                    </span>
+                                    <span class="subject">
+                                        <span class="from">陈缘萍</span><span class="time">16 mins </span>
+                                    </span>
+                                    <span class="message">您的邮件为什么不发送。。。。。。。</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- 个人中心模块处理 -->
+            <li class="dropdown dropdown-user">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    <img alt="个人图片" class="img-circle" src="@ViewBag.UserImage" />
+                    <span class="username username-hide-on-mobile">@ViewBag.Admin_UserLogin</span><i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-default">
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Index" target="_blank"><i class="icon-fighter-jet"></i>初心商城</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="javascript:void(0)" id="btnSetUser"><i class="icon-user"></i>账户设置</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="javascript:void(0)" id="btnSetUserImage"><i class="icon-fire"></i>设置头像</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="javascript:void(0)" id="updatePassword"><i class="icon-rocket"></i>修改密码</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Home" asp-action="Layout"><i class="icon-key"></i>退出用户</a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- 开启所有聊天以及配置选项 -->
+            <li class="dropdown dropdown-quick-sidebar-toggler" style="display:none">
+                <a href="javascript:;" class="dropdown-toggle"><i class="icon-lock"></i></a>
+            </li>
+        </ul>
+    </div>
+
+    @*修改密码浮层*@
+    <div class="modal fade" id="UpdatePasswordModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                    <h4 class="modal-title">用户《@ViewBag.Admin_UserLogin》修改密码</h4>
+                </div>
+                <div class="modal-body">
+                    <p style="color:red">友情提示：请输入复杂的密码信息，否则容易被盗，修改密码后请重新登陆</p>                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">原始密码:</span>
+                            <input type="text" id="password_old" placeholder="请您输入原始密码" maxlength="20" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">新密码:</span>
+                            <input type="text" id="password_new" placeholder="请您输入新密码" maxlength="20" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">确认密码:</span>
+                            <input type="text" id="password_ok" placeholder="请您输入确认密码" maxlength="20" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-reply"></i>取消</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdatePassword"><i class="icon-ok"></i>确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,175 @@
+﻿@model Pls.Entity.Pager<IQueryable<Pls.Entity.OrderPay>>
+@{
+    ViewBag.Title = "个人中心-订单详情";
+}
+@section css
+{  
+    <link href="~/front/css/personalcenter.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/front/css/pay.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="personcenter">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-left:15px;">
+        @await Html.PartialAsync("_PersonalRight")
+        <div class="rightcontent col-xs-12 col-sm-12 col-md-9 col-lg-10">
+            <div id="personContent">
+                <div id="orderlist">
+                    <div class="areablock" style="background:#f5f5f5">我的订单</div>
+                    <div class="orderboxlist">
+                        <div class="ordertab">
+                            <ul class="commoditystatus">
+                                <li class="active"><a href="#allorder" data-toggle="tab" id="btnAddOrderList">全部订单</a><b class="counttip">@Model.total</b></li>
+                                <li><a href="#waitforpayment" data-toggle="tab" id="btnWaitforpayment">待付款</a><b id="countWaitforpayment" class="counttip" style="display:none"></b></li>
+                                <li><a href="#waitforreceiving" data-toggle="tab" id="btnWaitforreceiving">待收货</a><b id="countWaitforreceiving" class="counttip" style="display:none"></b></li>
+                            </ul>
+                            @*<div class="ordersearch">
+                                <input type="text" class="form-control" placeholder="请您输入商品名称或者订单编号">
+                                <span><i class="glyphicon glyphicon-search orderglysearch"></i></span>
+                            </div>*@
+                            <div style="clear:both;"></div>
+                        </div>
+                        <div id="commoditystatusContent" class="tab-content">
+                            <div id="allorder" class="tab-pane fade in active">
+                                <div class="header">
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">图片</div>
+                                    <div class="col-xs-2 col-sm-3 col-md-4 col-lg-5">详情</div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">金额/支付方式</div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1">状态</div>
+                                    <div class="col-xs-2 col-sm-3 col-md-2 col-lg-2">操作</div>
+                                </div>
+                                <div class="tbody">
+                                    @{
+                                        foreach (var orderDetail in Model.rows)
+                                        {
+                                            <div class="box">
+                                                <div class="boxhead">
+                                                    <div>
+                                                        <em>日期:</em><em style="font-style:normal;">@orderDetail.createtime.ToString("yyyy-MM-dd HH:mm:ss")</em>
+                                                        <span style="margin-left:20px;"><em>订单编号:</em><b>@orderDetail.order_number</b></span>
+                                                        <i class="glyphicon glyphicon-trash btnDeleteOrderDetail" style="cursor:pointer" delete_orderid="@orderDetail.order_id"  delete_orderdetailId="@orderDetail.orderdetail_id"></i>
+                                                    </div>
+                                                </div>
+                                                <div style="clear:both;"></div>
+                                                <div class="boxbody">
+                                                    <div class="col-xs-4 col-sm-5 col-md-5 col-lg-7">
+                                                        <a href="/Home/Detail?id=@orderDetail.shop_id">
+                                                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="text-align:center;">
+                                                                <img src="@orderDetail.shop_defaultimg" class="img img-responsive orderimg">
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 orderdesc">
+                                                                <p>@orderDetail.shop_name</p>
+                                                                <p >@orderDetail.shop_code</p>
+                                                            </div>
+                                                        </a>
+                                                        <div class="clr"></div>
+                                                        @if (!string.IsNullOrEmpty(orderDetail.shopcoupon_type))
+                                                        {
+                                                            <div class="onsaletag"><em>@orderDetail.shopcoupon_type</em>@orderDetail.shopcoupon_name</div>
+                                                        }
+                                                    </div>
+                                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 amount">
+                                                        <div>总额:<span>¥</span><em>@orderDetail.order_total</em><hr><em>@(orderDetail.order_payway == 1 ? "支付宝" : "微信支付")</em></div>
+                                                    </div>
+                                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 orderstate">
+                                                        @(orderDetail.order_paystatus == 1 ? "未支付" : "已支付")<br />
+                                                        @if (orderDetail.order_goods == 1)
+                                                        {
+                                                            <span>未发货</span>
+                                                        }
+                                                        else if (orderDetail.order_goods == 2)
+                                                        {
+                                                            <span>已发货</span>
+                                                        }
+                                                        else if (orderDetail.order_goods == 3)
+                                                        {
+                                                            <span>已完成</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>已完成</span>
+                                                        }
+                                                    </div>
+                                                    <div class="col-xs-2 col-sm-3 col-md-2 col-lg-2 orderopr">
+                                                        @if (orderDetail.order_paystatus == 1)
+                                                        {
+                                                            <button class="btn btn-warning btnPayDialog" shop_money="@orderDetail.order_total">支付订单</button>
+                                                        }
+                                                        @if (orderDetail.order_goods == 2 && orderDetail.order_paystatus == 2)
+                                                        {
+                                                            <button class="btn btn-warning btnGoodsOk" order_id="@orderDetail.order_id" shopsku_id="@orderDetail.shopsku_id">确认收货</button>
+                                                        }
+                                                        @if (orderDetail.order_goods == 3 && orderDetail.orderdetail_evaluate == 1)
+                                                        {
+                                                            <a href="/Personal/EvaluateIndex?order_id=@orderDetail.order_id&shopsku_id=@orderDetail.shopsku_id">评价晒单</a>
+                                                        }
+                                                        @if (orderDetail.order_goods == 3 && orderDetail.orderdetail_evaluate == 2)
+                                                        {
+                                                            <a href="/Personal/EvaluateIndex?order_id=@orderDetail.order_id&shopsku_id=@orderDetail.shopsku_id">追加评价</a>
+                                                        }
+                                                        <a href="/Personal/OrderDetail?order_id=@orderDetail.order_id">订单详情</a>
+                                                    </div>
+                                                </div>
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div id="waitforpayment" class="tab-pane fade">
+                                <div class="header">
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">图片</div>
+                                    <div class="col-xs-2 col-sm-3 col-md-4 col-lg-5">详情</div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">金额/支付方式</div>
+                                    <div class="col-xs-2 col-sm-1 col-md-2 col-lg-1">状态</div>
+                                    <div class="col-xs-2 col-sm-1 col-md-2 col-lg-2">操作</div>
+                                </div>
+                                <div class="tbody"></div>
+                           </div>
+                            <div id="waitforreceiving" class="tab-pane fade">
+                                <div class="header">
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">图片</div>
+                                    <div class="col-xs-2 col-sm-3 col-md-4 col-lg-5">详情</div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">金额/支付方式</div>
+                                    <div class="col-xs-2 col-sm-1 col-md-2 col-lg-1">状态</div>
+                                    <div class="col-xs-2 col-sm-1 col-md-2 col-lg-2">操作</div>
+                                </div>
+                                <div class="tbody"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>                                                                                                                                                                                                                              
+    <div class="clr"></div>
+</div>
+<div class="clr"></div>
+
+<div class="modal" id="deleteorderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="top:100px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                订单删除确认页面<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="text-align:center;">
+                <i class="glyphicon glyphicon-question-sign" style="font-size:50px;color:#E4393C;margin-right:10px;vertical-align:middle; "></i>
+                <span style="font-size:16px;">删除后你可以从订单回收站还原该订单，也可以做永久删除</span>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-default" style="color: #E4393C;background: #FFFFFF;border:#cccccc;" data-dismiss="modal" aria-hidden="true">取消</a>
+                <button type="button" class="btn btn-default" style="color:white;background:#E4393C" id="btnDeleteOk">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_PayDialog")
+
+@section scripts
+{
+    <script src="~/front/js/personalorder.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            pls.front.personalorder.init();
+        })
+    </script>
+}

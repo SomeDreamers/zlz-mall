@@ -1,0 +1,58 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>初心确认用户注册页面</title>
+        <environment names="Development">
+            <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" asp-fallback-href="~/js/bootstrap/dist/css/bootstrap.min.css" />
+            <link href="~/front/css/activation.css" rel="stylesheet" asp-append-version="true" />
+        </environment>
+        <environment names="Staging,Production">
+            <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" asp-fallback-href="~/js/bootstrap/dist/css/bootstrap.min.css" />
+            <link href="~/front/css/activation.css" rel="stylesheet" asp-append-version="true" />
+        </environment>
+    </head>
+    <body>
+        <div class="header">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <a asp-controller="Home" asp-action="Index"><img src="~/img/logo/logo.png" class="toplogo" /></a>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+        <div>
+            <div class="box">
+                <ul class="activation">
+                    <li class="active"><i class="glyphicon glyphicon-user"></i></li>
+                    <li class="active arrow_to_emailactive"><i class="glyphicon glyphicon-hand-right"></i></li>
+                    <li class="active"><i class="glyphicon glyphicon-envelope"></i></li>
+                    <li class="active arrow_to_ok"><i class="glyphicon glyphicon-hand-right"></i></li>
+                    <li class="active"><i class="glyphicon glyphicon-ok"></i></li>
+                </ul>
+                <div class="boxcontent">
+                    <p>Hi,您好</p>
+                    <p>欢迎您激活注册初心服务。</p>
+                    <p>@Model.status_message</p>
+                    <p class="button"><a asp-controller="Login" asp-action="Index">马上登录</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div style="text-align:center;">
+                <ul class="loginwaylist">
+                    <li><a asp-controller="Home" asp-action="Index">首页</a></li>|
+                    <li><a asp-controller="Home" asp-action="Index">初心商城</a></li>|
+                    <li><a asp-controller="System" asp-action="News">网站公告</a></li>|
+                    <li><a asp-controller="System" asp-action="Aboutus">关于我们</a></li>
+                </ul>
+                <div class="record">
+                    @ViewBag.Copyright <a href="http://www.miitbeian.gov.cn/" target="_blank">京ICP备16055626号</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,41 @@
+﻿@model IQueryable<Pls.Entity.NoticeEntity>
+@{
+    ViewBag.Title = "网站系统公告通知";
+}
+@section css
+{
+    <link href="~/front/css/new.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/front/css/effect.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="ih-item square colored effect4">
+            <a href="javascript:void(0)">
+                <div class="img"><img src="http://images.chuxinm.com/chuxinm/new.jpg" alt="img"></div>
+                <div class="mask1"></div><div class="mask2"></div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="right_new col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="list">
+                @{
+                    foreach (var item in Model)
+                    {
+                        <div class="item">
+                            <div class="publish col-xs-12 col-sm-4 col-md-3 col-lg-3">
+                                发布时间:@item.createtime.ToString("yyyy-MM-dd HH:mm:ss")
+                                <i class="glyphicon glyphicon-pushpin"></i>
+                            </div>
+                            <p class="content col-xs-12 col-sm-8 col-md-9 col-lg-9"> @item.notice_desc</p>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear:both"></div>
