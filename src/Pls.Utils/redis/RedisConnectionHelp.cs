@@ -20,7 +20,7 @@ namespace Pls.Utils
     {
         //redis的键和连接字符串,现在配置在后台，后面扩展到配置文件中
         public static readonly string SysCustomKey = "pls_";
-        private static readonly string RedisConnectionString = "127.0.0.1:6379,allowadmin=true,password=*******";
+        private static readonly string RedisConnectionString = "127.0.0.1:6379,allowadmin=true";
 
         //单例锁和redis初始化对象
         private static readonly object Locker = new object();

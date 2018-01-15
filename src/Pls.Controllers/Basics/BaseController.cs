@@ -86,7 +86,7 @@ namespace Pls.Controllers
         /// <returns></returns>
         public UserSession GetUserSession()
         {
-            string userJson = HttpContext.Session.GetString(KeyUtil.user_info_front);
+            string userJson = HttpContext.Session.GetString(KeyUtil.user_info);
             if (string.IsNullOrEmpty(userJson))
             {
                 return null;
