@@ -31,5 +31,12 @@ namespace Pls.Plug.Weixin
             responseMessage.Content = string.Format("您刚才发送了文字信息：{0}", requestMessage.Content);
             return responseMessage;
         }
+
+        public override IResponseMessageBase OnEventRequest(IRequestMessageEventBase requestMessage)
+        {
+            var responseMessage = CreateResponseMessage<ResponseMessageText>();
+            responseMessage.Content = string.Format("推送事件");
+            return responseMessage;
+        }
     }
 }

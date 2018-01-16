@@ -23,6 +23,7 @@ using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using NLog.Extensions.Logging;
 using Pls.Plug;
+using Pls.Controllers;
 
 namespace ProgrammersLiveShow
 {
@@ -62,6 +63,9 @@ namespace ProgrammersLiveShow
             services.AddOptions();
             services.Configure<ApplicationConfig>(Configuration.GetSection("ApplicationConfig"));
             services.Configure<SendMailConfig>(Configuration.GetSection("SendMailConfig"));
+
+            //注册微信app信息
+            WeixinConfig.RegistWeixinAppMsg();
 
             //解决界面显示HTML编码问题
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
