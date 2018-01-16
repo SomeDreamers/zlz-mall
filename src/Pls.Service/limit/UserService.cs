@@ -305,6 +305,69 @@ namespace Pls.Service
             return new BaseResult<bool>(201, false);
         }
 
+        /// <summary>
+        /// 添加微信用户
+        /// </summary>
+        /// <param name="userEntity"></param>
+        /// <returns></returns>
+        public async Task<BaseResult<DropDownList>> AddWexinUser(UserEntity userEntity, UserInfoEntity userInfoEntity)
+        {
+            //判断数据库中有没有微信用户注册信息
+            var user = await userRepository.GetAsync(c => c.user_code == userEntity.user_code);
+            if (user != null && !string.IsNullOrEmpty(user.user_id))
+            {
+                //增加cookie
+                //用户登录正常，修改用户登录时间并且将登录的信息保存到Session中
+                await userRepository.UpdateAsync(new UserEntity() { user_id = userEntity.user_id, last_time = DateTime.Now }, false, true, c => c.last_time);
+
+                //处理信息，如果redis连接成功，则直接判断是否存在值，如果存在，则直接使用，否则直接查询并且保存，如果连接失败，则直接查询
+                UserSession userSession = new UserSession
+                {
+                    user_id = userEntity.user_id,
+                    user_name = userEntity.user_name + userEntity.user_code,
+                    user_image = userEntity.user_image,
+                    full_name = userEntity.full_name,
+                    action_url = null
+                };
+                httpContextUtil.setObjectAsJson(KeyUtil.user_info_front, userSession);
+                return new BaseResult<DropDownList>(200, null);
+            }
+            //同步添加三个数据库 User和UserInfo以及角色用户表--完善用户信息
+            userEntity.user_ip = httpContextUtil.getRemoteIp();
+            userEntity.source_type = (int)SourceStatus.front;
+
+            var userRole = await roleRepository.GetAsync(c => c.role_type == (int)RoleType.Front);
+            if (userRole != null)
+            {
+                var isUserRoleTrue = await userRoleRepository.AddAsync(new UserRoleEntity()
+                {
+                    user_id = userEntity.user_id,
+                    role_id = userRole.role_id
+                }, false);
+            }
+            var isUserTrue = await userRepository.AddAsync(userEntity, false);
+            var isUserInfoTrue = await userInfoRepository.AddAsync(userInfoEntity, false);
+            if (unitOfWork.SaveCommit())
+            {
+                //增加cookie
+                //用户登录正常，修改用户登录时间并且将登录的信息保存到Session中
+                await userRepository.UpdateAsync(new UserEntity() { user_id = userEntity.user_id, last_time = DateTime.Now }, false, true, c => c.last_time);
+
+                //处理信息，如果redis连接成功，则直接判断是否存在值，如果存在，则直接使用，否则直接查询并且保存，如果连接失败，则直接查询
+                UserSession userSession = new UserSession
+                {
+                    user_id = userEntity.user_id,
+                    user_name = userEntity.user_name + userEntity.user_code,
+                    user_image = userEntity.user_image,
+                    full_name = userEntity.full_name,
+                    action_url = null
+                };
+                httpContextUtil.setObjectAsJson(KeyUtil.user_info_front, userSession);
+                return new BaseResult<DropDownList>(200, null);
+            }
+            return new BaseResult<DropDownList>(201, null);
+        }
+
         public async Task<BaseResult<DropDownList>> Add(UserEntity userEntity)
         {
             //判断数据库中有没有邮箱(user_email)和电话(user_phone)，如果存在则不能添加，提示错误

@@ -73,6 +73,13 @@ namespace Pls.IService
         Task<BaseResult<bool>> checkData(string user_id, string content);
 
         /// <summary>
+        /// 添加微信用户
+        /// </summary>
+        /// <param name="userEntity"></param>
+        /// <returns></returns>
+        Task<BaseResult<DropDownList>> AddWexinUser(UserEntity userEntity, UserInfoEntity userInfoEntity);
+
+        /// <summary>
         /// 注册用户信息，不能受权限控制，前台
         /// </summary>
         /// <param name="userEntity">用户实体</param>

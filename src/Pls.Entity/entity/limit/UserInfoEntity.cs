@@ -31,17 +31,17 @@ namespace Pls.Entity
         /// <summary>
         /// 可空  国家
         /// </summary>
-        public int? country { get; set; }
+        public string country { get; set; }
 
         /// <summary>
         /// 可空  省份
         /// </summary>
-        public int? province { get; set; }
+        public string province { get; set; }
 
         /// <summary>
         /// 可空  城市
         /// </summary>
-        public int? city { get; set; }
+        public string city { get; set; }
 
         /// <summary>
         /// Address String 可空  地址

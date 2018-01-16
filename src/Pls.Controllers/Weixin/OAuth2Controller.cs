@@ -11,14 +11,19 @@ using Pls.Controllers.filter;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
 using Senparc.Weixin.Exceptions;
 using Senparc.Weixin;
+using Pls.IService;
+using Pls.Entity;
+using System.Threading.Tasks;
 
 namespace Pls.Controllers.Weixin
 {
     [Area("Weixin")]
     public class OAuth2Controller : BaseController
     {
-        public OAuth2Controller(ApplicationConfigServices _applicationConfigServices) : base(_applicationConfigServices)
+        public IUserService userService { get; private set; }
+        public OAuth2Controller(ApplicationConfigServices _applicationConfigServices, IUserService _userService) : base(_applicationConfigServices)
         {
+            userService = _userService;
         }
 
         /// <summary>
@@ -52,7 +57,7 @@ namespace Pls.Controllers.Weixin
         /// <param name="state"></param>
         /// <param name="returnUrl">用户最初尝试进入的页面</param>
         /// <returns></returns>
-        public ActionResult UserInfoCallback(string code, string state, string returnUrl)
+        public async Task<ActionResult> UserInfoCallbackAsync(string code, string state, string returnUrl)
         {
             if (string.IsNullOrEmpty(code))
             {
@@ -90,13 +95,28 @@ namespace Pls.Controllers.Weixin
             //因为第一步选择的是OAuthScope.snsapi_userinfo，这里可以进一步获取用户详细信息
             try
             {
-                if (!string.IsNullOrEmpty(returnUrl))
+                OAuthUserInfo wxUserInfo = OAuthApi.GetUserInfo(result.access_token, result.openid);
+                //验证通过注册用户信息
+                UserEntity user = new UserEntity
                 {
-                    return Redirect(returnUrl);
-                }
+                    user_code = wxUserInfo.openid,
+                    user_name = wxUserInfo.nickname,
+                    user_gender = wxUserInfo.sex,
+                    user_image = wxUserInfo.headimgurl
+                };
 
-                OAuthUserInfo userInfo = OAuthApi.GetUserInfo(result.access_token, result.openid);
-                return View(userInfo);
+                UserInfoEntity userInfo = new UserInfoEntity
+                {
+                    user_id = user.user_id,
+                    country = wxUserInfo.country,
+                    province = wxUserInfo.province,
+                    city = wxUserInfo.city,
+
+                };
+                await userService.AddWexinUser(user, userInfo);
+
+                //跳转连接
+                return Redirect(string.IsNullOrEmpty(returnUrl) ? WeixinConfig.WeixinHomeUrl : returnUrl);
             }
             catch (ErrorJsonResultException ex)
             {
@@ -111,7 +131,7 @@ namespace Pls.Controllers.Weixin
         /// <param name="state"></param>
         /// <param name="returnUrl">用户最初尝试进入的页面</param>
         /// <returns></returns>
-        public ActionResult BaseCallback(string code, string state, string returnUrl)
+        public async Task<ActionResult> BaseCallback(string code, string state, string returnUrl)
         {
             if (string.IsNullOrEmpty(code))
             {
@@ -139,20 +159,34 @@ namespace Pls.Controllers.Weixin
             //Session["OAuthAccessToken"] = result;
 
             //因为这里还不确定用户是否关注本微信，所以只能试探性地获取一下
-            OAuthUserInfo userInfo = null;
+            OAuthUserInfo wxUserInfo = null;
             try
             {
                 //已关注，可以得到详细信息
-                userInfo = OAuthApi.GetUserInfo(result.access_token, result.openid);
+                wxUserInfo = OAuthApi.GetUserInfo(result.access_token, result.openid);
 
-                if (!string.IsNullOrEmpty(returnUrl))
+                //验证通过注册用户信息
+                UserEntity user = new UserEntity
                 {
-                    return Redirect(returnUrl);
-                }
+                    user_code = wxUserInfo.openid,
+                    user_name = wxUserInfo.nickname,
+                    user_gender = wxUserInfo.sex,
+                    user_image = wxUserInfo.headimgurl
+                };
 
+                UserInfoEntity userInfo = new UserInfoEntity
+                {
+                    user_id = user.user_id,
+                    country = wxUserInfo.country,
+                    province = wxUserInfo.province,
+                    city = wxUserInfo.city,
+                    
+                };
+                await userService.AddWexinUser(user, userInfo);
 
-                ViewData["ByBase"] = true;
-                return View("UserInfoCallback", userInfo);
+                //跳转连接
+                return Redirect(string.IsNullOrEmpty(returnUrl)? WeixinConfig.WeixinHomeUrl: returnUrl);
+
             }
             catch (ErrorJsonResultException ex)
             {

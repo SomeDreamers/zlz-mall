@@ -15,7 +15,8 @@ namespace Pls.Controllers
         public static readonly string AppId = "wx8dbc3c0e83df87fe";//与微信公众账号后台的AppId设置保持一致，区分大小写。
         public static readonly string AppSecret = "39fc0d777bdd271e3e1e587a1119a5b6";
 
-        public static readonly string WeixinOAuthCallbackUrl = "/Weixin/oauth2/UserInfoCallback";
+        public static readonly string WeixinOAuthCallbackUrl = "/Weixin/Oauth2/UserInfoCallbackAsync";
+        public static readonly string WeixinHomeUrl = "/Weixin/Home/Index";
 
         public static void RegistWeixinAppMsg()
         {
