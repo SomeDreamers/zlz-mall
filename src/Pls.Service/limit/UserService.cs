@@ -19,6 +19,7 @@ using Pls.Utils;
 using Pls.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Pls.Utils.oss;
 
 namespace Pls.Service
 {
@@ -526,8 +527,9 @@ namespace Pls.Service
         public BaseResult<string> UploadUserImage(IFormFileCollection files)
         {
             int result_number = 0;
-            var return_result = FileUtil.UploadQiniuImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, Settings.UserImagePrefix, out result_number);
-
+            //var return_result = FileUtil.UploadQiniuImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, Settings.UserImagePrefix, out result_number);
+            //阿里云
+            var return_result = OssOptionUtil.UploadAliYunImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, out result_number);
             if (string.IsNullOrEmpty(return_result))
             {
                 return new BaseResult<string>(result_number);
