@@ -8,6 +8,8 @@
 //  网站：				  		http://www.chuxinm.com
 //==============================================================
 using Microsoft.EntityFrameworkCore;
+using Pls.Entity.data.mapping.store;
+using Pls.Entity.entity.store;
 
 namespace Pls.Entity
 {
@@ -41,6 +43,8 @@ namespace Pls.Entity
         public DbSet<OrderDetailEntity> OrderDetails { get; set; }
         public DbSet<CommentEntity> Comments { get; set; }
         public DbSet<CommentImageEntity> CommentImages { get; set; }
+        public DbSet<CategoryEntity> Categorys { get; set; }
+        public DbSet<ShopCategoryEntity> ShopCategorys { get; set; }
 
         //系统管理模块实体映射
         public DbSet<MessageEntity> Messages { get; set; }
@@ -54,6 +58,7 @@ namespace Pls.Entity
         public DbSet<UserDepartRoleInfo> userDepartRole { get; set; }
         public DbSet<OrderPay> OrderPays { get; set; }
         public DbSet<ShopCommentInfo> shopCommentInfos { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -79,6 +84,8 @@ namespace Pls.Entity
             modelBuilder.Entity<OrderDetailEntity>(OrderDetailMapping.MapInfo);
             modelBuilder.Entity<CommentImageEntity>(CommentImageMapping.MapInfo);
             modelBuilder.Entity<UserApplyEntity>(UserApplyMapping.MapInfo);
+            modelBuilder.Entity<CategoryEntity>(CategoryMapping.MapInfo);
+            modelBuilder.Entity<ShopCategoryEntity>(ShopCategoryMapping.MapInfo);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -9,9 +9,13 @@
 //==============================================================
 using Autofac;
 using Pls.IRepository;
+using Pls.IRepository.store;
 using Pls.IService;
+using Pls.IService.store;
 using Pls.Repository;
+using Pls.Repository.store;
 using Pls.Service;
+using Pls.Service.store;
 using Pls.Utils;
 
 namespace Pls.Plug
@@ -51,6 +55,8 @@ namespace Pls.Plug
             builder.RegisterType<OrderDetailRepository>().As<IOrderDetailRepository>();
             builder.RegisterType<CommentRepository>().As<ICommentRepository>();
             builder.RegisterType<CommentImageRepository>().As<ICommentImageRepository>();
+            builder.RegisterType<CategoryRepository>().As<ICategoryRepository>();
+            builder.RegisterType<ShopCategoryRepository>().As<IShopCategoryRepository>();
 
             builder.RegisterType<MessageRepository>().As<IMessageRepository>();
             builder.RegisterType<NoticeRepository>().As<INoticeRepository>();
@@ -69,6 +75,7 @@ namespace Pls.Plug
             builder.RegisterType<NoticeService>().As<INoticeService>();
             builder.RegisterType<UserApplyService>().As<IUserApplyService>();
             builder.RegisterType<CarouselService>().As<ICarouselService>();
+            builder.RegisterType<CategoryService>().As<ICategoryService>();
         }
     }
 }

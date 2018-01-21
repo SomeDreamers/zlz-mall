@@ -319,7 +319,7 @@ namespace Pls.Service
             {
                 //增加cookie
                 //用户登录正常，修改用户登录时间并且将登录的信息保存到Session中
-                await userRepository.UpdateAsync(new UserEntity() { user_id = userEntity.user_id, last_time = DateTime.Now }, false, true, c => c.last_time);
+                await userRepository.UpdateAsync(new UserEntity() { user_id = user.user_id, last_time = DateTime.Now }, true, true, c => c.last_time);
 
                 //处理信息，如果redis连接成功，则直接判断是否存在值，如果存在，则直接使用，否则直接查询并且保存，如果连接失败，则直接查询
                 UserSession userSession = new UserSession
@@ -336,6 +336,8 @@ namespace Pls.Service
             //同步添加三个数据库 User和UserInfo以及角色用户表--完善用户信息
             userEntity.user_ip = httpContextUtil.getRemoteIp();
             userEntity.source_type = (int)SourceStatus.front;
+            userEntity.createtime = DateTime.Now;
+            userEntity.last_time = DateTime.Now;
 
             var userRole = await roleRepository.GetAsync(c => c.role_type == (int)RoleType.Front);
             if (userRole != null)
@@ -348,12 +350,9 @@ namespace Pls.Service
             }
             var isUserTrue = await userRepository.AddAsync(userEntity, false);
             var isUserInfoTrue = await userInfoRepository.AddAsync(userInfoEntity, false);
-            if (unitOfWork.SaveCommit())
+            if (await unitOfWork.SaveCommitAsync())
             {
                 //增加cookie
-                //用户登录正常，修改用户登录时间并且将登录的信息保存到Session中
-                await userRepository.UpdateAsync(new UserEntity() { user_id = userEntity.user_id, last_time = DateTime.Now }, false, true, c => c.last_time);
-
                 //处理信息，如果redis连接成功，则直接判断是否存在值，如果存在，则直接使用，否则直接查询并且保存，如果连接失败，则直接查询
                 UserSession userSession = new UserSession
                 {
