@@ -1,0 +1,76 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>搜索界面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no, email=no" />
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="~/weixin/css/core.css">
+    <link rel="stylesheet" href="~/weixin/css/icon.css">
+    <link rel="stylesheet" href="~/weixin/css/home.css">
+    <link rel="stylesheet" href="~/weixin/css/add.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script type="text/javascript" src="themes/js/jquery.min.js"></script>
+    <link href="iTunesArtwork@2x.png" sizes="114x114" rel="apple-touch-icon-precomposed">
+    <script type="text/javascript">
+	$(function(){
+		$("#delete-history").click(function(){
+			$("#history-content").remove();
+		});
+		$("#search").focus(function(){
+			$(".search-link").text("搜索");
+		});
+	});
+    </script>
+</head>
+<body>
+    <header class="aui-header-default">
+        <div class="aui-header-center aui-header-center-clear search-title">
+            <div class="aui-header-search-box">
+                <input id="search" type="text" placeholder="请输入商品名称"
+                       class="aui-header-search"> <i class="aui-icon aui-icon-small-search"></i>
+            </div>
+        </div>
+        <a href="#" class="search-link">
+            取消
+        </a>
+    </header>
+    <div id="history-content">
+        <div style="margin:10px 10px 0 5px;padding-top:10px;position: relative;">
+            历史搜索
+            <i style="position: absolute;right:10px" id="delete-history">删除</i>
+        </div>
+        <div style="margin-left:10px;">
+            <ul class="menu">
+                <li><a href="http://www.baidu.com">baidu.com</a></li>
+                <li><a href="http://www.Code52.Net">Code52.Net</a></li>
+                <li><a href="http://www.yahoo.com">yahoo.com</a></li>
+                <li><a href="http://www.google.com">google.com</a></li>
+                <li style=""><a href="http://www.google.com">google.com</a></li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <div style="margin:10px 10px 0 5px;padding-top:10px;">
+            热门搜索
+        </div>
+        <div style="margin-left:10px;">
+            <ul class="menu">
+                <li><a href="http://www.baidu.com">baidu.com</a></li>
+                <li><a href="http://www.Code52.Net">Code52.Net</a></li>
+                <li><a href="http://www.yahoo.com">yahoo.com</a></li>
+                <li><a href="http://www.google.com">google.com</a></li>
+                <li style=""><a href="http://www.google.com">google.com</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+.category{
+	position: relative;
+	font-size: 14px;
+}
+.category span{
+	position: absolute;
+	right:0px;
+	color: #868686;
+	font-weight:normal;
+	font-size: 12px;
+}
+
+.search-title{
+	margin-left:0px;
+	margin-right:50px;
+	margin-left:10px;
+}
+
+.search-link{
+	position: absolute;
+	right:10px;
+	color:#323232;
+	font-size: 14px;
+}
+
+.menu{  
+      font-size: 14px;  
+   }  
+ .menu li{  
+ 	 border: 1px solid #CCCCCC;
+ 	 border-radius:4px;
+ 	 padding:3px;
+ 	 margin-top:7px;
+ 	 margin-right:3px;
+ 	 list-style: none;
+ 	 display: inline-block;//让li横向排列 
+     text-decoration: none;//去掉li前面的圆点    
+ }  
+ .menu li a{    
+ 	 margin:0px;
+     text-decoration: none;//去掉a的下划线样式        
+ } 
+
+
+ 
