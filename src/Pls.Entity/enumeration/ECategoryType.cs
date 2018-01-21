@@ -27,7 +27,7 @@ namespace Pls.Entity.enumeration
         Create = 4
     }
 
-    public class ECategoryTypeExtension
+    public static class ECategoryTypeExtension
     {
         public static string GetDescription(this ECategoryType type)
         {

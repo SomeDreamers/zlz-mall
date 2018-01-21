@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Pls.Utils;
+using Pls.IService.store;
+using System.Threading.Tasks;
 
 namespace Pls.Controllers.Admin.store
 {
@@ -14,9 +16,49 @@ namespace Pls.Controllers.Admin.store
     [AjaxOnly]
     public class CategoryController : BaseController
     {
-        public CategoryController(ApplicationConfigServices _applicationConfigServices) : base(_applicationConfigServices)
+        private readonly ICategoryService categoryService;
+        public CategoryController(ApplicationConfigServices _applicationConfigServices, ICategoryService categoryService) : base(_applicationConfigServices)
         {
+            this.categoryService = categoryService;
+        }
 
+        /// <summary>
+        /// 获取分类数据
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> AllCategory()
+        {
+            var categorys = await categoryService.GetCategoryAllInfosAsync();
+            return Json(categorys);
+        }
+
+        /// <summary>
+        /// 获取一级分类数据
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> List()
+        {
+            var categorys = await categoryService.GetCategory1stsAsync();
+            return Json(categorys);
+        }
+
+        /// <summary>
+        /// 获取二级分类数据
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> ChildList(long parentId)
+        {
+            var categorys = await categoryService.GetCategory2rdByParentIdAsync(parentId);
+            return Json(categorys);
+        }
+
+        /// <summary>
+        /// 分类管理首页
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Index()
+        {
+            return View();
         }
     }
 }

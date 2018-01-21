@@ -11,6 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot/admin\js\store\Category.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\admin\js\store\category.js" />
+    <Content Include="wwwroot\admin\js\store\Category.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="wwwroot\**\*;Views\**\*;Areas\**\*;nlog.config">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
