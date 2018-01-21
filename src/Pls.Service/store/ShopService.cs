@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Threading.Tasks;
 using Pls.UnitOfWork;
 using Pls.IRepository;
+using Pls.Utils.oss;
 
 namespace Pls.Service
 {
@@ -290,7 +291,9 @@ namespace Pls.Service
         public BaseResult<string> UploadEditor(IFormFileCollection files)
         {
             int result_number = 0;
-            var return_result = FileUtil.UploadQiniuImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, Settings.ShopImagePrefix, out result_number);
+            //var return_result = FileUtil.UploadQiniuImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, Settings.ShopImagePrefix, out result_number);
+            //阿里云
+            var return_result = OssOptionUtil.UploadAliYunImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, out result_number);
             if (string.IsNullOrEmpty(return_result))
             {
                 return new BaseResult<string>(result_number);
@@ -452,7 +455,9 @@ namespace Pls.Service
             }
 
             int result_number = 0;
-            var return_result = FileUtil.UploadQiniuImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, Settings.ShopImagePrefix, out result_number);
+            //var return_result = FileUtil.UploadQiniuImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, Settings.ShopImagePrefix, out result_number);
+            //阿里云
+            var return_result = OssOptionUtil.UploadAliYunImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, out result_number);
             if (string.IsNullOrEmpty(return_result))
             {
                 return new BaseResult<DropDownList>(result_number, null);
@@ -621,7 +626,9 @@ namespace Pls.Service
         public BaseResult<string> UploadEvaluateImage(IFormFileCollection files)
         {
             int result_number = 0;
-            var return_result = FileUtil.UploadQiniuImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, Settings.ShopImagePrefix, out result_number);
+            //var return_result = FileUtil.UploadQiniuImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, Settings.ShopImagePrefix, out result_number);
+            //阿里云
+            var return_result = OssOptionUtil.UploadAliYunImage(files, FileUtil.localhost_image, hostingEnv.WebRootPath, out result_number);
             if (string.IsNullOrEmpty(return_result))
             {
                 return new BaseResult<string>(result_number);

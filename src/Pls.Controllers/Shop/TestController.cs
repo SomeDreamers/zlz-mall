@@ -9,6 +9,7 @@
 //==============================================================
 using Microsoft.AspNetCore.Mvc;
 using Pls.Utils;
+using Pls.Utils.oss;
 
 namespace Pls.Controllers
 {
@@ -34,6 +35,12 @@ namespace Pls.Controllers
         public IActionResult QiniuIndex()
         {
             UploadDownloadUtil.uploadFile(@"E:\project\kencery_lyzj\code\ProgrammersLiveShow\src\ProgrammersLiveShow\wwwroot\img\bg.png", Settings.TestImagePrefix, "123asdsada12.png");
+            return View();
+        }
+
+        public IActionResult AliyunIndex()
+        {
+            OssOptionUtil.OssPutObject(@"C:\Users\82069\Desktop\QQ图片20180117231453.png", "png");
             return View();
         }
     }

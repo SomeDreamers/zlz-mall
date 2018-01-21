@@ -164,7 +164,7 @@ pls.admin.shop = (function () {
         $("#btnShopImageManage_Skip").hide();
 
         initModelOne();
-        initClearContent()
+        initClearContent();
 
         $("#btnAddShopData").prop("disabled", false);
         opt.type = 1;
